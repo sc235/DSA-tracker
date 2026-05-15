@@ -77,7 +77,7 @@ export const useAlgorithmStore = create<AlgorithmState>((set, get) => ({
   toggleRemoteSync: () => {
     const { isRemoteSyncEnabled } = get();
     if (!isRemoteSyncEnabled) {
-      socketService.connect();
+      socketService.connect(); // async but fire-and-forget is fine here
     } else {
       socketService.disconnect();
     }
