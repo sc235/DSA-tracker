@@ -16,6 +16,7 @@ interface AlgorithmState {
   nextStep: () => void;
   prevStep: () => void;
   togglePlay: () => void;
+  setIsPlaying: (playing: boolean) => void;
   reset: () => void;
   setPlaybackSpeed: (speed: number) => void;
   jumpToStep: (index: number, remote?: boolean) => void;
@@ -56,6 +57,8 @@ export const useAlgorithmStore = create<AlgorithmState>((set, get) => ({
   },
 
   togglePlay: () => set((state) => ({ isPlaying: !state.isPlaying })),
+
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
 
   reset: () => {
     set({ currentStepIndex: 0, isPlaying: false });
@@ -100,3 +103,8 @@ export const useAlgorithmStore = create<AlgorithmState>((set, get) => ({
     return true;
   }
 }));
+
+// Register the store's jumpToStep as the socket callback (breaks circular dependency)
+socketService.setStepUpdateCallback((index: number) => {
+  useAlgorithmStore.getState().jumpToStep(index, true);
+});

@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Alert } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Theme } from '../../src/theme';
 import { Mic, Send, Bot, User, ChevronLeft, ShieldCheck, MessageSquare } from 'lucide-react-native';
 import { AITutorService } from '../../src/services/aiTutor';
+import { VoiceService } from '../../src/services/voiceService';
 
 interface Message {
   id: string;
@@ -143,7 +144,15 @@ export default function InterviewScreen() {
         </ScrollView>
 
         <View style={styles.inputArea}>
-          <TouchableOpacity style={styles.micButton}>
+          <TouchableOpacity style={styles.micButton} onPress={() => {
+              // Speak the last interviewer message aloud
+              const lastAiMsg = [...messages].reverse().find(m => m.role === 'interviewer');
+              if (lastAiMsg) {
+                VoiceService.speak(lastAiMsg.text);
+              } else {
+                Alert.alert('Voice', 'No interviewer message to read aloud yet.');
+              }
+          }}>
               <Mic color={Theme.colors.textMuted} size={24} />
           </TouchableOpacity>
           <TextInput

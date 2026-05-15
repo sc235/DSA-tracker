@@ -4,8 +4,13 @@ import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Theme } from '../../src/theme';
 import { bubbleSortGenerator, selectionSortGenerator, insertionSortGenerator, mergeSortGenerator, quickSortGenerator } from '../../src/engine/SortingEngine';
 import { ArrayVisualizer } from '../../src/components/Visualizers/ArrayVisualizer';
-import { Play, Pause, RotateCcw, ChevronLeft, Zap, Clock } from 'lucide-react-native';
+import { Play, Pause, RotateCcw, ChevronLeft, Zap, Clock, Sparkles, Gamepad2, Volume2, VolumeX } from 'lucide-react-native';
 import { Step } from '../../src/engine/types';
+import { ComplexityGraph } from '../../src/components/ComplexityGraph';
+import { BenchmarkingService, BenchmarkResult } from '../../src/services/benchmarking';
+import { getAIExplanation, AIExplanation } from '../../src/services/aiTutor';
+import { VoiceService } from '../../src/services/voiceService';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -29,12 +34,35 @@ export default function BattleVisualizerScreen() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed] = useState(500);
 
+  const [isScientistMode, setIsScientistMode] = useState(false);
+  const [showAI, setShowAI] = useState(false);
+  const [benchmarkResults1, setBenchmarkResults1] = useState<BenchmarkResult[]>([]);
+  const [benchmarkResults2, setBenchmarkResults2] = useState<BenchmarkResult[]>([]);
+  const [aiExplanation, setAiExplanation] = useState<AIExplanation | null>(null);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+
   useEffect(() => {
     const gen1 = getGenerator(algo1 as string);
     const gen2 = getGenerator(algo2 as string);
     
     setSteps1(gen1([...initialData]));
     setSteps2(gen2([...initialData]));
+
+    // Automatically start the battle after a short delay for a premium feel
+    const timer = setTimeout(() => {
+        setIsPlaying(true);
+    }, 800);
+
+    // Prepare benchmarks
+    const runBenchmarks = async () => {
+        const impl1 = BenchmarkingService.implementations[algo1 as string];
+        const impl2 = BenchmarkingService.implementations[algo2 as string];
+        if (impl1) setBenchmarkResults1(await BenchmarkingService.runBenchmark(algo1 as string, impl1));
+        if (impl2) setBenchmarkResults2(await BenchmarkingService.runBenchmark(algo2 as string, impl2));
+    };
+    runBenchmarks();
+
+    return () => clearTimeout(timer);
   }, [algo1, algo2, initialData]);
 
   const getGenerator = (id: string) => {
@@ -69,6 +97,11 @@ export default function BattleVisualizerScreen() {
           }
           return prev;
         });
+        if (showAI && isVoiceEnabled) {
+            const isFinal = currentStep1 === steps1.length - 1 && currentStep2 === steps2.length - 1;
+            const explanation = getAIExplanation('sorting', algo1 as string, steps1[currentStep1], currentStep1, isFinal);
+            VoiceService.speak(explanation.explanation);
+        }
 
         if (bothFinished) setIsPlaying(false);
       }, playbackSpeed);
@@ -104,6 +137,21 @@ export default function BattleVisualizerScreen() {
           headerShadowVisible: false,
         }} 
       />
+
+      {isScientistMode && benchmarkResults1.length > 0 && (
+          <View style={styles.scientistOverlay}>
+              <ComplexityGraph 
+                data={benchmarkResults1} 
+                title={`Battle Analysis: ${getAlgoName(algo1 as string)} vs ${getAlgoName(algo2 as string)}`} 
+              />
+              <View style={styles.scientistNote}>
+                  <Text style={styles.noteText}>
+                      Notice the gap between the two algorithms as input size grows. 
+                      One might start faster but lose efficiency at scale!
+                  </Text>
+              </View>
+          </View>
+      )}
 
       <View style={styles.battleField}>
           <View style={styles.contenderArea}>
@@ -176,6 +224,28 @@ export default function BattleVisualizerScreen() {
             )}
           </TouchableOpacity>
 
+          <TouchableOpacity 
+            style={[styles.controlButton, isScientistMode && styles.activeControlBtn]} 
+            onPress={() => {
+                setIsScientistMode(!isScientistMode);
+                if (showAI) setShowAI(false);
+            }}
+          >
+            <Sparkles color={isScientistMode ? Theme.colors.primary : "white"} size={24} />
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.controlButton, showAI && styles.activeControlBtn]} 
+            onPress={() => {
+                setShowAI(!showAI);
+                if (isScientistMode) setIsScientistMode(false);
+                const isFinal = currentStep1 === steps1.length - 1 && currentStep2 === steps2.length - 1;
+                setAiExplanation(getAIExplanation('sorting', algo1 as string, steps1[currentStep1], currentStep1, isFinal));
+            }}
+          >
+            <Gamepad2 color={showAI ? Theme.colors.primary : "white"} size={24} />
+          </TouchableOpacity>
+
           <View style={styles.spacer} />
       </View>
       
@@ -194,6 +264,54 @@ export default function BattleVisualizerScreen() {
                   {steps1.length < steps2.length ? `${getAlgoName(algo1 as string)} was more efficient!` : `${getAlgoName(algo2 as string)} was more efficient!`}
               </Text>
           </View>
+      )}
+      {showAI && aiExplanation && (
+        <Animated.View entering={FadeInDown.springify()} style={styles.aiOverlay}>
+          <View style={styles.aiCard}>
+            <View style={styles.aiHeader}>
+              <View style={styles.aiTitleRow}>
+                <Sparkles size={18} color={Theme.colors.warning} />
+                <Text style={styles.aiTitle}>Battle Tutor Insight</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                  <TouchableOpacity 
+                    onPress={() => {
+                        const nextState = !isVoiceEnabled;
+                        setIsVoiceEnabled(nextState);
+                        if (!nextState) VoiceService.stop();
+                        else if (aiExplanation) VoiceService.speak(aiExplanation.explanation);
+                    }}
+                    style={styles.voiceToggle}
+                  >
+                    {isVoiceEnabled ? (
+                        <Volume2 size={20} color={Theme.colors.primary} />
+                    ) : (
+                        <VolumeX size={20} color={Theme.colors.textMuted} />
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => {
+                      setShowAI(false);
+                      VoiceService.stop();
+                  }} style={styles.aiClose}>
+                    <Text style={styles.closeText}>Got it!</Text>
+                  </TouchableOpacity>
+              </View>
+            </View>
+            <ScrollView style={styles.aiScroll} showsVerticalScrollIndicator={false}>
+              <Text style={styles.aiText}>
+                While {getAlgoName(algo1 as string)} is performing a {steps1[currentStep1]?.type}, 
+                observe how it compares to {getAlgoName(algo2 as string)}.
+              </Text>
+              <Text style={styles.aiText}>{aiExplanation.explanation}</Text>
+              {aiExplanation.proTip && (
+                <View style={styles.proTipContainer}>
+                   <Text style={styles.proTipTitle}>Battle Strategy</Text>
+                   <Text style={styles.proTipText}>{aiExplanation.proTip}</Text>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </Animated.View>
       )}
     </SafeAreaView>
   );
@@ -358,5 +476,109 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
+  },
+  activeControlBtn: {
+    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    borderColor: Theme.colors.primary,
+  },
+  scientistOverlay: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    right: 20,
+    backgroundColor: Theme.colors.surface,
+    padding: 16,
+    borderRadius: 20,
+    zIndex: 2000,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    ...Theme.shadows.lg,
+  },
+  scientistNote: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 12,
+  },
+  noteText: {
+    color: Theme.colors.textMuted,
+    fontSize: 12,
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  aiOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    padding: Theme.spacing.md,
+    zIndex: 3000,
+  },
+  aiCard: {
+    backgroundColor: Theme.colors.surface,
+    borderRadius: 24,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    ...Theme.shadows.lg,
+  },
+  aiHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  aiTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  aiTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  aiClose: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  closeText: {
+    color: Theme.colors.primary,
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  voiceToggle: {
+    padding: 8,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+  },
+  aiScroll: {
+    maxHeight: 300,
+  },
+  aiText: {
+    color: 'white',
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  proTipContainer: {
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    padding: 12,
+    borderRadius: 12,
+    marginTop: 8,
+  },
+  proTipTitle: {
+    color: Theme.colors.success,
+    fontWeight: 'bold',
+    fontSize: 11,
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
+  proTipText: {
+    color: 'white',
+    fontSize: 13,
   }
 });

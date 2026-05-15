@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, Alert, TextInput } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Theme } from '../src/theme';
 import { useAuthStore } from '../src/store/useAuthStore';
@@ -57,7 +57,14 @@ export default function ProfileScreen() {
           <Text style={styles.userName}>{user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student'}</Text>
           <Text style={styles.userEmail}>{user.email}</Text>
           
-          <TouchableOpacity style={styles.editButton}>
+          <TouchableOpacity style={styles.editButton} onPress={() => {
+            Alert.prompt?.('Edit Name', 'Enter your display name:', async (newName) => {
+              if (newName) {
+                await supabase.auth.updateUser({ data: { full_name: newName } });
+                Alert.alert('Updated', 'Your name has been updated.');
+              }
+            }) || Alert.alert('Edit Profile', 'Profile editing is available on the mobile app.');
+          }}>
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
@@ -80,9 +87,9 @@ export default function ProfileScreen() {
 
         <View style={styles.menuSection}>
           <Text style={styles.menuSectionTitle}>Learning Settings</Text>
-          <MenuItem icon={Bell} label="Notifications" />
-          <MenuItem icon={Shield} label="Privacy & Security" />
-          <MenuItem icon={Settings} label="App Preferences" />
+          <MenuItem icon={Bell} label="Notifications" onPress={() => Alert.alert('Notifications', 'Push notifications for daily challenges and streak reminders. Coming soon!')} />
+          <MenuItem icon={Shield} label="Privacy & Security" onPress={() => Alert.alert('Privacy & Security', 'Your data is encrypted and stored securely via Supabase. We never share your information.')} />
+          <MenuItem icon={Settings} label="App Preferences" onPress={() => Alert.alert('App Preferences', 'Theme customization and playback speed defaults. Coming soon!')} />
         </View>
 
         <View style={styles.menuSection}>

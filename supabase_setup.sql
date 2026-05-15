@@ -10,7 +10,8 @@ CREATE TABLE profiles (
   avatar_url TEXT,
   learning_streak INTEGER DEFAULT 0,
   email TEXT,
-  total_xp INTEGER DEFAULT 0
+  total_xp INTEGER DEFAULT 0,
+  last_seen TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
 );
 
 -- 2. USER PROGRESS TABLE

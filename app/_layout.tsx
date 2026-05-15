@@ -2,12 +2,16 @@ import { Stack, useRouter, useSegments, useRootNavigationState } from 'expo-rout
 import { useEffect } from 'react';
 import { useAuthStore } from '../src/store/useAuthStore';
 import { supabase } from '../src/services/supabase';
+import { usePresence } from '../src/hooks/usePresence';
 
 export default function RootLayout() {
   const { user, setUser, setSession } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
   const navigationState = useRootNavigationState();
+
+  // Update online presence for duel matchmaking (only when logged in)
+  usePresence();
 
   useEffect(() => {
     // Check for initial session
@@ -52,6 +56,12 @@ export default function RootLayout() {
       <Stack.Screen name="visualizer/[id]" options={{ title: 'Visualizer' }} />
       <Stack.Screen name="quiz/[id]" options={{ title: 'Quiz' }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="battle/index" options={{ title: 'Battle Arena' }} />
+      <Stack.Screen name="battle/visualizer" options={{ title: 'Battle' }} />
+      <Stack.Screen name="duel/index" options={{ title: 'Duel' }} />
+      <Stack.Screen name="interview/index" options={{ title: 'Interview' }} />
+      <Stack.Screen name="profile" options={{ title: 'Profile' }} />
+      <Stack.Screen name="social" options={{ title: 'Social' }} />
     </Stack>
   );
 }
