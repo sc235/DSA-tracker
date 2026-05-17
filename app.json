@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "DSA-platform",
-    "slug": "DSA-platform",
+    "name": "AlgoPlatform",
+    "slug": "algoplatform",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "dsaplatform",
+    "scheme": "algoplatform",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

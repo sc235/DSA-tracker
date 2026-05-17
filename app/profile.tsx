@@ -106,7 +106,7 @@ export default function ProfileScreen() {
                   <Award size={28} color="white" />
                 </View>
                 <View style={styles.certificationBannerText}>
-                  <Text style={styles.certificationBannerTitle}>Algorithm Scientist Certified</Text>
+                  <Text style={styles.certificationBannerTitle}>AlgoPlatform Certified</Text>
                   <Text style={styles.certificationBannerSub}>Tap to view your official credential & badge</Text>
                 </View>
                 <ChevronRight size={24} color="white" />
@@ -184,7 +184,7 @@ export default function ProfileScreen() {
                   <View style={styles.goldBadge}>
                     <Award size={48} color="#fbbf24" />
                   </View>
-                  <Text style={styles.certOrg}>ALGORITHM SCIENTIST</Text>
+                  <Text style={styles.certOrg}>ALGOPLATFORM</Text>
                   <Text style={styles.certTitle}>CERTIFICATE OF EXCELLENCE</Text>
                   <View style={styles.certGoldBar} />
                 </View>

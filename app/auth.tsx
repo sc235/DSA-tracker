@@ -303,7 +303,7 @@ export default function AuthScreen() {
             </Animated.View>
 
             {/* Title */}
-            <Text style={styles.brandName}>Algorithm Scientist</Text>
+            <Text style={styles.brandName}>AlgoPlatform</Text>
             <Text style={styles.brandTagline}>
               {isLogin ? 'Welcome back, researcher.' : 'Begin your research journey.'}
             </Text>
