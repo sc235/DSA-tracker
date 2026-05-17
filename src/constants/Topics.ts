@@ -226,7 +226,7 @@ export const DSA_TOPICS: Topic[] = [
     description: 'Contiguous memory structures and pointer manipulation.',
     icon: 'grid',
     complexity: 'O(1)',
-    prerequisites: [],
+    prerequisites: ['hash-tables'],
     roadmapPosition: { x: 135, y: 450 },
     algorithms: [
       {
