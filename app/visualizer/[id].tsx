@@ -396,97 +396,87 @@ export default function VisualizerScreen() {
       </View>
 
       {!isPracticeMode && (
-        <View style={styles.speedSelectorWrapper}>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.speedSelectorScroll}
-            contentContainerStyle={styles.speedSelectorContent}
-          >
-            <View style={styles.speedGroup}>
-              <Text style={styles.speedLabel}>Speed</Text>
-              <View style={styles.speedButtons}>
-                {[0.5, 1, 2].map((s) => (
-                  <TouchableOpacity
-                    key={s}
-                    style={[
-                      styles.speedButton,
-                      playbackSpeed === 500 / s && styles.activeSpeedButton,
-                    ]}
-                    onPress={() => setPlaybackSpeed(500 / s)}
-                  >
-                    <Text
-                      style={[
-                        styles.speedButtonText,
-                        playbackSpeed === 500 / s && styles.activeSpeedButtonText,
-                      ]}
-                    >
-                      {s}x
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-
-            <View style={styles.verticalDivider} />
-
-            <View style={styles.actionGroup}>
-              <TouchableOpacity
+        <View style={styles.bottomControlDock}>
+          <View style={styles.modeButtonsRow}>
+            <TouchableOpacity
+              style={[
+                styles.dockModeBtn,
+                isScientistMode && styles.activeDockModeBtn,
+              ]}
+              onPress={() => {
+                setIsScientistMode(!isScientistMode);
+                if (showAI) setShowAI(false);
+              }}
+            >
+              <Sparkles
+                color={isScientistMode ? Theme.colors.primary : Theme.colors.warning}
+                size={18}
+              />
+              <Text
                 style={[
-                  styles.featureBtn,
-                  isScientistMode && styles.activeFeatureBtn,
+                  styles.dockModeBtnText,
+                  isScientistMode && styles.activeDockModeBtnText,
                 ]}
-                onPress={() => {
-                  setIsScientistMode(!isScientistMode);
-                  if (showAI) setShowAI(false);
-                }}
               >
-                <Sparkles
-                  color={isScientistMode ? Theme.colors.primary : Theme.colors.warning}
-                  size={16}
-                />
-                <Text
-                  style={[
-                    styles.featureBtnText,
-                    isScientistMode && styles.activeFeatureBtnText,
-                  ]}
-                >
-                  Scientist
-                </Text>
-              </TouchableOpacity>
+                Scientist Mode
+              </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.featureBtn, showAI && styles.activeFeatureBtn]}
-                onPress={() => {
-                  setShowAI(!showAI);
-                  if (isScientistMode) setIsScientistMode(false);
-                  // Refresh explanation for current step
-                  setAiExplanation(
-                    getAIExplanation(
-                      id as string,
-                      id as string,
-                      steps[currentStepIndex],
-                      currentStepIndex,
-                      currentStepIndex === steps.length - 1
-                    ),
-                  );
-                }}
+            <TouchableOpacity
+              style={[styles.dockModeBtn, showAI && styles.activeDockModeBtn]}
+              onPress={() => {
+                setShowAI(!showAI);
+                if (isScientistMode) setIsScientistMode(false);
+                setAiExplanation(
+                  getAIExplanation(
+                    id as string,
+                    id as string,
+                    steps[currentStepIndex],
+                    currentStepIndex,
+                    currentStepIndex === steps.length - 1
+                  ),
+                );
+              }}
+            >
+              <Gamepad2
+                color={showAI ? Theme.colors.primary : Theme.colors.success}
+                size={18}
+              />
+              <Text
+                style={[
+                  styles.dockModeBtnText,
+                  showAI && styles.activeDockModeBtnText,
+                ]}
               >
-                <Gamepad2
-                  color={showAI ? Theme.colors.primary : Theme.colors.success}
-                  size={16}
-                />
-                <Text
+                AI Tutor Mode
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.speedRow}>
+            <Text style={styles.dockSpeedLabel}>SPEED</Text>
+            <View style={styles.speedButtonsRow}>
+              {[0.5, 1, 2].map((s) => (
+                <TouchableOpacity
+                  key={s}
                   style={[
-                    styles.featureBtnText,
-                    showAI && styles.activeFeatureBtnText,
+                    styles.dockSpeedBtn,
+                    playbackSpeed === 500 / s && styles.activeDockSpeedBtn,
                   ]}
+                  onPress={() => setPlaybackSpeed(500 / s)}
                 >
-                  AI Tutor
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={[
+                      styles.dockSpeedBtnText,
+                      playbackSpeed === 500 / s && styles.activeDockSpeedBtnText,
+                    ]}
+                  >
+                    {s}x
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          </ScrollView>
+          </View>
         </View>
       )}
 
@@ -684,90 +674,81 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
   },
-  speedSelectorWrapper: {
+  bottomControlDock: {
     backgroundColor: Theme.colors.surface,
     borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.05)",
+    borderTopColor: "rgba(255,255,255,0.08)",
+    paddingHorizontal: 20,
+    paddingVertical: 16,
   },
-  speedSelectorScroll: {
-    maxHeight: 64,
-  },
-  speedSelectorContent: {
+  modeButtonsRow: {
     flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: 12,
-    gap: 16,
-  },
-  speedGroup: {
-    flexDirection: "row",
-    alignItems: "center",
     gap: 12,
+    marginBottom: 16,
   },
-  actionGroup: {
+  dockModeBtn: {
+    flex: 1,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: "rgba(255,255,255,0.04)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
-    gap: 10,
-  },
-  verticalDivider: {
-    width: 1,
-    height: 24,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    marginHorizontal: 2,
-  },
-  speedLabel: {
-    color: Theme.colors.textMuted,
-    fontSize: 12,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-  },
-  speedButtons: {
-    flexDirection: "row",
     gap: 8,
   },
-  speedButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-  },
-  activeSpeedButton: {
-    backgroundColor: Theme.colors.primary,
-    borderColor: Theme.colors.primary,
-  },
-  speedButtonText: {
-    color: Theme.colors.text,
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  activeSpeedButtonText: {
-    color: "white",
-  },
-  featureBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    gap: 6,
-  },
-  activeFeatureBtn: {
+  activeDockModeBtn: {
     backgroundColor: "rgba(99, 102, 241, 0.15)",
     borderColor: Theme.colors.primary,
   },
-  featureBtnText: {
+  dockModeBtnText: {
     color: "white",
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "600",
   },
-  activeFeatureBtnText: {
+  activeDockModeBtnText: {
     color: Theme.colors.primary,
     fontWeight: "bold",
+  },
+  speedRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dockSpeedLabel: {
+    color: Theme.colors.textMuted,
+    fontSize: 12,
+    fontWeight: "900",
+    textTransform: "uppercase",
+    letterSpacing: 1.5,
+    marginRight: 16,
+  },
+  speedButtonsRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  dockSpeedBtn: {
+    width: 56,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.15)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  activeDockSpeedBtn: {
+    backgroundColor: Theme.colors.primary,
+    borderColor: Theme.colors.primary,
+  },
+  dockSpeedBtnText: {
+    color: Theme.colors.text,
+    fontSize: 13,
+    fontWeight: "bold",
+  },
+  activeDockSpeedBtnText: {
+    color: "white",
   },
   aiOverlay: {
     position: "absolute",
