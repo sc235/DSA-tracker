@@ -23,7 +23,9 @@ export default function HomeScreen() {
   const router = useRouter();
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const NODE_OFFSET_X = SCREEN_WIDTH / 2 - NODE_WIDTH / 2;
-  const [completedTopics, setCompletedTopics] = useState<Record<string, boolean>>({});
+  const [completedTopics, setCompletedTopics] = useState<
+    Record<string, boolean>
+  >({});
   const [totalPoints, setTotalPoints] = useState(0);
 
   useFocusEffect(
@@ -56,8 +58,8 @@ export default function HomeScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <View style={styles.header}>
-        <View>
-          <Text style={styles.welcomeSubtitle}>Welcome to the DSA Platform 👋</Text>
+        <View style={styles.headerLeft}>
+          <Text style={styles.welcomeSubtitle}>WELCOME TO THE DSA PLATFORM 👋</Text>
           <Text style={styles.title}>Learning Path</Text>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
@@ -68,7 +70,7 @@ export default function HomeScreen() {
               />
               <Text style={styles.statText}>{totalPoints} XP</Text>
             </View>
-            <View style={[styles.stat, { marginLeft: 12 }]}>
+            <View style={[styles.stat, { marginLeft: 8 }]}>
               <Trophy size={14} color={Theme.colors.primary} />
               <Text style={styles.statText}>
                 {Object.values(completedTopics).filter(Boolean).length} Mastered
@@ -81,19 +83,19 @@ export default function HomeScreen() {
             style={styles.compareButton}
             onPress={() => router.push("/compare")}
           >
-            <BookOpen color={Theme.colors.warning} size={22} />
+            <BookOpen color={Theme.colors.warning} size={20} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.battleButton}
             onPress={() => router.push("/battle")}
           >
-            <Swords color="white" size={24} />
+            <Swords color="white" size={20} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.profileButton}
             onPress={() => router.push("/profile")}
           >
-            <User color={Theme.colors.primary} size={24} />
+            <User color={Theme.colors.primary} size={20} />
           </TouchableOpacity>
         </View>
       </View>
@@ -215,10 +217,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: Theme.spacing.lg,
+    paddingHorizontal: Theme.spacing.lg,
+    paddingVertical: Theme.spacing.md,
     paddingTop: Theme.spacing.xl,
     backgroundColor: "rgba(15, 23, 42, 0.9)",
     zIndex: 100,
+  },
+  headerLeft: {
+    flex: 1,
+    paddingRight: 10,
   },
   title: {
     fontSize: 24,
@@ -226,11 +233,11 @@ const styles = StyleSheet.create({
     color: Theme.colors.text,
   },
   welcomeSubtitle: {
-    fontSize: 12,
-    fontWeight: "700",
+    fontSize: 11,
+    fontWeight: "800",
     color: Theme.colors.primary,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 1.2,
     marginBottom: 2,
   },
   statsRow: {
@@ -256,30 +263,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   compareButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(245, 158, 11, 0.12)',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(245, 158, 11, 0.12)",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 8,
+    marginRight: 6,
     borderWidth: 1,
-    borderColor: 'rgba(245, 158, 11, 0.25)',
+    borderColor: "rgba(245, 158, 11, 0.25)",
   },
   battleButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: Theme.colors.secondary,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 12,
+    marginRight: 6,
     ...Theme.shadows.md,
   },
   profileButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: Theme.colors.surface,
     justifyContent: "center",
     alignItems: "center",
