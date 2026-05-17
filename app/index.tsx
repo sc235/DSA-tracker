@@ -1,5 +1,5 @@
 import { Stack, useFocusEffect, useRouter } from "expo-router";
-import { BookOpen, Swords, Trophy, User, Zap } from "lucide-react-native";
+import { BookOpen, Swords, Trophy, User, Zap, Bot } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   SafeAreaView,
@@ -92,6 +92,12 @@ export default function HomeScreen() {
             onPress={() => router.push("/battle")}
           >
             <Swords color="white" size={18} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.interviewButton}
+            onPress={() => router.push("/interview")}
+          >
+            <Bot color="white" size={18} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.profileButton}
@@ -283,6 +289,16 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     backgroundColor: Theme.colors.secondary,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 6,
+    ...Theme.shadows.md,
+  },
+  interviewButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 6,
