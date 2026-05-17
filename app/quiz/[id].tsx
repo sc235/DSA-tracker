@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, ScrollView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, ScrollView, StatusBar, Dimensions } from 'react-native';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Theme } from '../../src/theme';
 import { ProgressService } from '../../src/services/progress';
 import { Check, X, ArrowRight, RotateCcw, Home, Sparkles, Brain, Trophy, Zap, ShieldCheck } from 'lucide-react-native';
 import { AIQuizService } from '../../src/services/aiQuiz';
 import { Question } from '../../src/constants/Quizzes';
+import Svg, { Circle } from 'react-native-svg';
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export default function QuizScreen() {
   const { id } = useLocalSearchParams();
@@ -76,6 +79,10 @@ export default function QuizScreen() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Stack.Screen options={{ headerShown: false }} />
+        <Svg style={styles.svgBackground}>
+          <Circle cx={SCREEN_WIDTH * 0.85} cy={SCREEN_HEIGHT * 0.15} r="180" fill="rgba(99, 102, 241, 0.08)" />
+          <Circle cx={SCREEN_WIDTH * 0.15} cy={SCREEN_HEIGHT * 0.65} r="220" fill="rgba(16, 185, 129, 0.05)" />
+        </Svg>
         
         <View style={styles.finishedContainer}>
           <View style={styles.finishedBadge}>
@@ -149,6 +156,10 @@ export default function QuizScreen() {
           headerShadowVisible: false,
         }} 
       />
+      <Svg style={styles.svgBackground}>
+        <Circle cx={SCREEN_WIDTH * 0.85} cy={SCREEN_HEIGHT * 0.15} r="180" fill="rgba(99, 102, 241, 0.08)" />
+        <Circle cx={SCREEN_WIDTH * 0.15} cy={SCREEN_HEIGHT * 0.65} r="220" fill="rgba(16, 185, 129, 0.05)" />
+      </Svg>
 
       <View style={styles.headerArea}>
         <View style={styles.headerHeader}>
@@ -236,6 +247,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
+  },
+  svgBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 0,
   },
   loadingContainer: {
     flex: 1,
