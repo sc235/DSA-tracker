@@ -34,7 +34,6 @@ import {
   dpFibonacciGenerator,
   hashInsertGenerator,
   heapGenerator,
-  kadaneGenerator,
 } from "../../src/engine/AdvancedEngine";
 import { bfsGenerator, dfsGenerator } from "../../src/engine/GraphEngine";
 import { queueGenerator, stackGenerator } from "../../src/engine/LinearEngine";
@@ -172,9 +171,6 @@ export default function VisualizerScreen() {
       setSteps(generatedSteps);
     } else if (id === "array-reverse") {
       const generatedSteps = arrayReverseGenerator([10, 20, 30, 40, 50, 60]);
-      setSteps(generatedSteps);
-    } else if (id === "kadane-algo") {
-      const generatedSteps = kadaneGenerator([ -2, 1, -3, 4, -1, 2, 1, -5, 4 ]);
       setSteps(generatedSteps);
     } else if (id === "selection-sort") {
       const generatedSteps = selectionSortGenerator(initialData);

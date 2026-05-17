@@ -236,13 +236,6 @@ export const DSA_TOPICS: Topic[] = [
         timeComplexity: 'O(n)',
         spaceComplexity: 'O(1)',
       },
-      {
-        id: 'kadane-algo',
-        name: "Kadane's Algorithm",
-        description: 'Find the maximum sum contiguous subarray within a 1D array.',
-        timeComplexity: 'O(n)',
-        spaceComplexity: 'O(1)',
-      },
     ],
   },
   {
