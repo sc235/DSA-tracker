@@ -5,7 +5,7 @@ import { Theme } from '../src/theme';
 import { useAuthStore } from '../src/store/useAuthStore';
 import { supabase } from '../src/services/supabase';
 import { ProgressService } from '../src/services/progress';
-import { LogOut, Trophy, Book, Zap, ChevronRight, Settings, Bell, Shield, CreditCard, Award, Sparkles, CheckCircle2, Palette, Code, Check } from 'lucide-react-native';
+import { LogOut, Trophy, Book, Zap, ChevronRight, Settings, Bell, Shield, CreditCard, Award, Sparkles, CheckCircle2 } from 'lucide-react-native';
 
 export default function ProfileScreen() {
   const { user } = useAuthStore();
@@ -14,20 +14,9 @@ export default function ProfileScreen() {
   const [loading, setLoading] = useState(true);
   const [showCertification, setShowCertification] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showPrefModal, setShowPrefModal] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState('one_dark');
-  const [enableLigatures, setEnableLigatures] = useState(true);
   const [editName, setEditName] = useState('');
   const [editBio, setEditBio] = useState('');
   const [updating, setUpdating] = useState(false);
-
-  const themes = [
-    { id: 'one_dark', name: 'One Dark Pro', bg: '#282c34', keyword: '#c678dd', str: '#98c379', fn: '#61afef', comment: '#5c6370' },
-    { id: 'dracula', name: 'Dracula Official', bg: '#282a36', keyword: '#ff79c6', str: '#f1fa8c', fn: '#50fa7b', comment: '#6272a4' },
-    { id: 'tokyo', name: 'Tokyo Night', bg: '#1a1b26', keyword: '#bb9af7', str: '#9ece6a', fn: '#7aa2f7', comment: '#565f89' },
-    { id: 'monokai', name: 'Monokai Pro', bg: '#2d2a2e', keyword: '#ff6188', str: '#a9dc76', fn: '#fc9867', comment: '#727072' },
-  ];
-  const currentThemeObj = themes.find(t => t.id === selectedTheme) || themes[0];
 
   useEffect(() => {
     async function loadStats() {
@@ -180,7 +169,7 @@ export default function ProfileScreen() {
           <Text style={styles.menuSectionTitle}>Learning Settings</Text>
           <MenuItem icon={Bell} label="Notifications" onPress={() => Alert.alert('Notifications', 'Push notifications for daily challenges and streak reminders. Coming soon!')} />
           <MenuItem icon={Shield} label="Privacy & Security" onPress={() => Alert.alert('Privacy & Security', 'Your data is encrypted and stored securely via Supabase. We never share your information.')} />
-          <MenuItem icon={Palette} label="IDE Code Theme & Ligatures" onPress={() => setShowPrefModal(true)} />
+          <MenuItem icon={Settings} label="App Preferences" onPress={() => Alert.alert('App Preferences', 'Theme customization and playback speed defaults. Coming soon!')} />
         </View>
 
         <View style={styles.menuSection}>
@@ -333,118 +322,6 @@ export default function ProfileScreen() {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </Modal>
-
-      <Modal
-        visible={showPrefModal}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowPrefModal(false)}
-      >
-        <SafeAreaView style={styles.modalContainer}>
-          <StatusBar barStyle="light-content" />
-          <View style={styles.modalHeaderBar}>
-            <Text style={styles.modalHeaderTitle}>IDE Code Theme & Ligatures</Text>
-            <TouchableOpacity onPress={() => setShowPrefModal(false)} style={styles.closeBtn}>
-              <Text style={styles.closeBtnText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView contentContainerStyle={styles.prefModalContent} showsVerticalScrollIndicator={false}>
-            <Text style={styles.sectionSubHeader}>Select Editor Theme</Text>
-            <View style={styles.themesGrid}>
-              {themes.map(t => (
-                <TouchableOpacity
-                  key={t.id}
-                  style={[
-                    styles.themeCard,
-                    selectedTheme === t.id && styles.themeCardActive
-                  ]}
-                  onPress={() => setSelectedTheme(t.id)}
-                  activeOpacity={0.8}
-                >
-                  <View style={[styles.themePreviewHeader, { backgroundColor: t.bg }]}>
-                    <View style={styles.dotsRow}>
-                      <View style={[styles.dot, { backgroundColor: '#ff5f56' }]} />
-                      <View style={[styles.dot, { backgroundColor: '#ffbd2e' }]} />
-                      <View style={[styles.dot, { backgroundColor: '#27c93f' }]} />
-                    </View>
-                    {selectedTheme === t.id && (
-                      <View style={styles.activeCheck}>
-                        <Check size={14} color="white" />
-                      </View>
-                    )}
-                  </View>
-                  <Text style={styles.themeName}>{t.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <Text style={styles.sectionSubHeader}>Editor Preferences</Text>
-            <TouchableOpacity
-              style={styles.prefToggleCard}
-              onPress={() => setEnableLigatures(!enableLigatures)}
-              activeOpacity={0.8}
-            >
-              <View style={styles.toggleTextCol}>
-                <Text style={styles.toggleTitle}>Font Ligatures</Text>
-                <Text style={styles.toggleDesc}>Render combined coding operators (e.g. {enableLigatures ? '→, ≥, ≡' : '->, >=, ==='})</Text>
-              </View>
-              <View style={[styles.switchBox, enableLigatures && styles.switchBoxActive]}>
-                <View style={[styles.switchThumb, enableLigatures && styles.switchThumbActive]} />
-              </View>
-            </TouchableOpacity>
-
-            <Text style={styles.sectionSubHeader}>Live Code Preview</Text>
-            <View style={[styles.codePreviewBox, { backgroundColor: currentThemeObj.bg }]}>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.keyword, fontWeight: '700' }}>function </Text>
-                <Text style={{ color: currentThemeObj.fn, fontWeight: '700' }}>binarySearch</Text>
-                <Text style={{ color: 'white' }}> (arr, target) &#123;</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.comment, fontStyle: 'italic', marginLeft: 16 }}>// O(log n) optimal search</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.keyword, marginLeft: 16 }}>let </Text>
-                <Text style={{ color: 'white' }}>left = </Text>
-                <Text style={{ color: '#ffb86c' }}>0</Text>
-                <Text style={{ color: 'white' }}>, right = arr.length </Text>
-                <Text style={{ color: currentThemeObj.keyword }}>{enableLigatures ? '−' : '-'}</Text>
-                <Text style={{ color: '#ffb86c' }}> 1</Text>
-                <Text style={{ color: 'white' }}>;</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.keyword, marginLeft: 16 }}>while </Text>
-                <Text style={{ color: 'white' }}> (left </Text>
-                <Text style={{ color: currentThemeObj.keyword }}>{enableLigatures ? '≤' : '<='}</Text>
-                <Text style={{ color: 'white' }}> right) &#123;</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.keyword, marginLeft: 32 }}>const </Text>
-                <Text style={{ color: 'white' }}>mid = Math.</Text>
-                <Text style={{ color: currentThemeObj.fn }}>floor</Text>
-                <Text style={{ color: 'white' }}>((left + right) / </Text>
-                <Text style={{ color: '#ffb86c' }}>2</Text>
-                <Text style={{ color: 'white' }}>);</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: currentThemeObj.keyword, marginLeft: 32 }}>if </Text>
-                <Text style={{ color: 'white' }}> (arr[mid] </Text>
-                <Text style={{ color: currentThemeObj.keyword }}>{enableLigatures ? '≡' : '==='}</Text>
-                <Text style={{ color: 'white' }}> target) </Text>
-                <Text style={{ color: currentThemeObj.keyword }}>return </Text>
-                <Text style={{ color: currentThemeObj.str }}>"Found!"</Text>
-                <Text style={{ color: 'white' }}>;</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: 'white', marginLeft: 16 }}>&#125;</Text>
-              </View>
-              <View style={styles.codeLine}>
-                <Text style={{ color: 'white' }}>&#125;</Text>
-              </View>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
       </Modal>
     </SafeAreaView>
   );
@@ -972,124 +849,5 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
     marginLeft: 12,
-  },
-  prefModalContent: {
-    padding: Theme.spacing.xl,
-    paddingBottom: 60,
-  },
-  sectionSubHeader: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: 'white',
-    marginTop: 24,
-    marginBottom: 16,
-    letterSpacing: 0.5,
-  },
-  themesGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    justifyContent: 'space-between',
-  },
-  themeCard: {
-    width: '47%',
-    backgroundColor: Theme.colors.surface,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: Theme.colors.border,
-    overflow: 'hidden',
-    marginBottom: 8,
-  },
-  themeCardActive: {
-    borderColor: '#fbbf24',
-  },
-  themePreviewHeader: {
-    height: 70,
-    padding: 12,
-    justifyContent: 'space-between',
-  },
-  dotsRow: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  activeCheck: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#fbbf24',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  themeName: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Theme.colors.text,
-    padding: 12,
-    textAlign: 'center',
-  },
-  prefToggleCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Theme.colors.surface,
-    padding: 20,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: Theme.colors.border,
-  },
-  toggleTextCol: {
-    flex: 1,
-    marginRight: 16,
-  },
-  toggleTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: 'white',
-    marginBottom: 4,
-  },
-  toggleDesc: {
-    fontSize: 13,
-    color: Theme.colors.textMuted,
-    lineHeight: 18,
-  },
-  switchBox: {
-    width: 52,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    justifyContent: 'center',
-    paddingHorizontal: 3,
-  },
-  switchBoxActive: {
-    backgroundColor: '#10b981',
-  },
-  switchThumb: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: 'white',
-  },
-  switchThumbActive: {
-    alignSelf: 'flex-end',
-  },
-  codePreviewBox: {
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
-    ...Theme.shadows.lg,
-  },
-  codeLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 2,
   }
 });
