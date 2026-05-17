@@ -21,7 +21,7 @@ const getIcon = (id: string): LucideIcon => {
     case 'trees': return GitGraph;
     case 'hash-tables': return Layers;
     case 'heaps': return Layers;
-    case 'tries': return GitGraph;
+    case 'arrays': return Layers;
     case 'graphs': return Network;
     case 'dp': return Layers;
     default: return Layers;

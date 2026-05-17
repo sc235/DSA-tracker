@@ -30,10 +30,11 @@ import { LinearVisualizer } from "../../src/components/Visualizers/LinearVisuali
 import { NodeVisualizer } from "../../src/components/Visualizers/NodeVisualizer";
 import { TreeVisualizer } from "../../src/components/Visualizers/TreeVisualizer";
 import {
+  arrayReverseGenerator,
   dpFibonacciGenerator,
   hashInsertGenerator,
   heapGenerator,
-  trieInsertGenerator,
+  kadaneGenerator,
 } from "../../src/engine/AdvancedEngine";
 import { bfsGenerator, dfsGenerator } from "../../src/engine/GraphEngine";
 import { queueGenerator, stackGenerator } from "../../src/engine/LinearEngine";
@@ -169,8 +170,11 @@ export default function VisualizerScreen() {
     } else if (id === "dp-fibonacci") {
       const generatedSteps = dpFibonacciGenerator(6);
       setSteps(generatedSteps);
-    } else if (id === "trie-insert") {
-      const generatedSteps = trieInsertGenerator(["HI", "HE"]);
+    } else if (id === "array-reverse") {
+      const generatedSteps = arrayReverseGenerator([10, 20, 30, 40, 50, 60]);
+      setSteps(generatedSteps);
+    } else if (id === "kadane-algo") {
+      const generatedSteps = kadaneGenerator([ -2, 1, -3, 4, -1, 2, 1, -5, 4 ]);
       setSteps(generatedSteps);
     } else if (id === "selection-sort") {
       const generatedSteps = selectionSortGenerator(initialData);

@@ -216,19 +216,136 @@ export const dpFibonacciGenerator = (n: number): Step[] => {
     return steps;
 };
 
-export const trieInsertGenerator = (words: string[]): HeapStep[] => {
-    const steps: HeapStep[] = [];
-    const trieNodes: TreeNode[] = [
-        { id: 'root', value: 0, leftId: 'h', rightId: null, x: 0, y: 0 },
-        { id: 'h', value: 'H' as any, leftId: 'i', rightId: 'e', x: 0, y: 70 },
-        { id: 'i', value: 'I' as any, leftId: null, rightId: null, x: -40, y: 140 },
-        { id: 'e', value: 'E' as any, leftId: null, rightId: null, x: 40, y: 140 },
-    ];
+export const arrayReverseGenerator = (initial: number[]): Step[] => {
+    const steps: Step[] = [];
+    const arr = [...initial];
 
     steps.push({
-        treeNodes: trieNodes,
-        description: "Trie structure for words 'HI' and 'HE'. Characters are shared at prefixes.",
-        highlightedNodeIds: ['root', 'h']
+        data: [...arr],
+        description: "Initial array. We will reverse it in-place using two pointers (left & right).",
+        activeIndices: [],
+        comparingIndices: [],
+        swappingIndices: []
+    });
+
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left < right) {
+        steps.push({
+            data: [...arr],
+            description: `Comparing elements at pointers left (${left}) and right (${right}).`,
+            activeIndices: [],
+            comparingIndices: [left, right],
+            swappingIndices: []
+        });
+
+        steps.push({
+            data: [...arr],
+            description: `Swapping ${arr[left]} and ${arr[right]}.`,
+            activeIndices: [],
+            comparingIndices: [],
+            swappingIndices: [left, right]
+        });
+
+        const temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+
+        steps.push({
+            data: [...arr],
+            description: `Successfully swapped! Moving pointers inward.`,
+            activeIndices: [left, right],
+            comparingIndices: [],
+            swappingIndices: []
+        });
+
+        left++;
+        right--;
+    }
+
+    steps.push({
+        data: [...arr],
+        description: `🎉 Reversal complete! The array is fully inverted in O(n) time and O(1) space.`,
+        activeIndices: arr.map((_, i) => i),
+        comparingIndices: [],
+        swappingIndices: []
+    });
+
+    return steps;
+};
+
+export const kadaneGenerator = (initial: number[]): Step[] => {
+    const steps: Step[] = [];
+    const arr = [...initial];
+
+    steps.push({
+        data: [...arr],
+        description: "Kadane's Algorithm: We will find the maximum sum contiguous subarray in O(n) time.",
+        activeIndices: [],
+        comparingIndices: [],
+        swappingIndices: []
+    });
+
+    let maxSoFar = arr[0];
+    let currentSum = arr[0];
+
+    steps.push({
+        data: [...arr],
+        description: `Initialize currentSum = ${currentSum} and maxSoFar = ${maxSoFar} at index 0.`,
+        activeIndices: [0],
+        comparingIndices: [],
+        swappingIndices: []
+    });
+
+    for (let i = 1; i < arr.length; i++) {
+        const val = arr[i];
+        steps.push({
+            data: [...arr],
+            description: `Examining element at index ${i}: ${val}.`,
+            activeIndices: [],
+            comparingIndices: [i],
+            swappingIndices: []
+        });
+
+        if (currentSum + val < val) {
+            currentSum = val;
+            steps.push({
+                data: [...arr],
+                description: `Previous sum was making us smaller. Reset currentSum starting at ${val}.`,
+                activeIndices: [i],
+                comparingIndices: [],
+                swappingIndices: []
+            });
+        } else {
+            currentSum += val;
+            steps.push({
+                data: [...arr],
+                description: `Adding ${val} to running sum. currentSum = ${currentSum}.`,
+                activeIndices: [i],
+                comparingIndices: [],
+                swappingIndices: []
+            });
+        }
+
+        if (currentSum > maxSoFar) {
+            maxSoFar = currentSum;
+            steps.push({
+                data: [...arr],
+                description: `🏆 New maximum subarray sum found: ${maxSoFar}!`,
+                activeIndices: [i],
+                comparingIndices: [],
+                swappingIndices: [i]
+            });
+        }
+    }
+
+    steps.push({
+        data: [...arr],
+        description: `🎉 Kadane's Algorithm finished! The Maximum Subarray Sum is ${maxSoFar}.`,
+        activeIndices: arr.map((_, i) => i),
+        comparingIndices: [],
+        swappingIndices: []
     });
 
     return steps;
