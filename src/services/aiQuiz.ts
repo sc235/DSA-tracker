@@ -103,14 +103,14 @@ const HEAPS_SCENARIOS = [
 const ARRAYS_SCENARIOS = [
   { q: 'In an in-place Array Reversal using the Two-Pointer approach, what is the auxiliary space complexity?', a: 'O(1)', exp: 'Two pointers swap elements directly within the existing contiguous memory block.' },
   { q: 'What is the time complexity of reversing a 1D array of N elements using two pointers?', a: 'O(n)', exp: 'The pointers iterate from both ends towards the middle, completing in exactly N/2 swaps.' },
-  { q: 'Kadane\'s algorithm for finding the Maximum Subarray Sum operates in what guaranteed time complexity?', a: 'O(n)', exp: 'Kadane maintains a running local maximum across a single linear array pass.' },
   { q: 'When rotating an array of N elements to the right by K positions, how can it be achieved efficiently in O(n) time?', a: '3 reverse operations', exp: 'Reverse the entire array, reverse the first K elements, then reverse the remaining N-K elements.' },
   { q: 'What is the key advantage of contiguous memory allocation in an Array compared to a Linked List?', a: 'O(1) random access', exp: 'Direct indexing allows calculating element memory addresses instantly.' },
   { q: 'If an array is sorted, which algorithmic approach is optimal for finding two numbers that sum to a target?', a: 'Two-Pointer approach', exp: 'Pointers at the start and end move inward based on sum comparisons.' },
   { q: 'What happens when inserting an element into the beginning of an array of size N?', a: 'O(n) element shifting', exp: 'All existing elements must be shifted one index to the right in memory.' },
-  { q: 'In Kadane\'s algorithm, when the running current subarray sum becomes negative, what is the optimal step?', a: 'Reset running sum to 0', exp: 'A negative prefix sum will only decrease any subsequent subarray sum.' },
   { q: 'In a 2D matrix of dimensions M x N, what is the time complexity of a complete linear scan?', a: 'O(M * N)', exp: 'Every single cell in the grid is visited exactly once.' },
-  { q: 'What is the space complexity of Kadane\'s algorithm when finding the maximum subarray sum?', a: 'O(1)', exp: 'Only two scalar integer variables (currentSum and maxSum) are maintained.' }
+  { q: 'What is the worst-case time complexity of searching for an unsorted element in a static array of size N?', a: 'O(n)', exp: 'A linear scan must inspect every single index from 0 to N-1.' },
+  { q: 'When deleting an element at index 0 from a dynamic array, what is the resulting computational cost?', a: 'O(n) element shifting', exp: 'All subsequent elements must shift left by one position to fill the memory gap.' },
+  { q: 'Why do arrays exhibit exceptional CPU cache performance compared to pointer-based structures?', a: 'Spatial locality', exp: 'Contiguous memory layout allows CPUs to prefetch neighboring array elements into high-speed cache.' }
 ];
 
 const GRAPH_SCENARIOS = [
@@ -186,7 +186,7 @@ export const AIQuizService = {
         break;
       case 'arrays':
         scenario = getRandomElement(ARRAYS_SCENARIOS);
-        poolOptions = ['O(1)', 'O(n)', '3 reverse operations', 'O(1) random access', 'Two-Pointer approach', 'O(n) element shifting', 'Reset running sum to 0', 'O(M * N)', 'Contiguous memory', 'Kadane\'s Algorithm'];
+        poolOptions = ['O(1)', 'O(n)', '3 reverse operations', 'O(1) random access', 'Two-Pointer approach', 'O(n) element shifting', 'Spatial locality', 'O(M * N)', 'Contiguous memory', 'Linear scan'];
         break;
       case 'graphs':
         scenario = getRandomElement(GRAPH_SCENARIOS);
