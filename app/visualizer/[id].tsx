@@ -368,30 +368,48 @@ export default function VisualizerScreen() {
             <Text style={styles.practiceButtonText}>Perform Next Step</Text>
           </TouchableOpacity>
         ) : (
-          <>
-            <TouchableOpacity style={styles.controlButton} onPress={reset}>
-              <RotateCcw size={24} color={Theme.colors.text} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.controlButton} onPress={prevStep}>
-              <SkipBack size={24} color={Theme.colors.text} />
-            </TouchableOpacity>
+          <View style={styles.playbackBarContainer}>
+            <View style={styles.sideGroup}>
+              <TouchableOpacity style={styles.controlButton} onPress={reset}>
+                <RotateCcw size={22} color={Theme.colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.controlButton} onPress={prevStep}>
+                <SkipBack size={22} color={Theme.colors.text} />
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
               style={[styles.controlButton, styles.playButton]}
               onPress={togglePlay}
             >
               {isPlaying ? (
-                <Pause size={32} color="white" fill="white" />
+                <Pause size={30} color="white" fill="white" />
               ) : (
-                <Play size={32} color="white" fill="white" />
+                <Play size={30} color="white" fill="white" />
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.controlButton} onPress={nextStep}>
-              <SkipForward size={24} color={Theme.colors.text} />
-            </TouchableOpacity>
-          </>
+            <View style={[styles.sideGroup, { justifyContent: "flex-end" }]}>
+              <TouchableOpacity style={styles.controlButton} onPress={nextStep}>
+                <SkipForward size={22} color={Theme.colors.text} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.controlButton}
+                onPress={() => {
+                  const nextState = !isVoiceEnabled;
+                  setIsVoiceEnabled(nextState);
+                  if (!nextState) VoiceService.stop();
+                  else if (aiExplanation) VoiceService.speak(aiExplanation.explanation);
+                }}
+              >
+                {isVoiceEnabled ? (
+                  <Volume2 size={22} color={Theme.colors.primary} />
+                ) : (
+                  <VolumeX size={22} color={Theme.colors.textMuted} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
       </View>
 
@@ -584,13 +602,23 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   controls: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
     paddingVertical: Theme.spacing.xl,
     backgroundColor: Theme.colors.surface,
     borderTopLeftRadius: Theme.borderRadius.xl,
     borderTopRightRadius: Theme.borderRadius.xl,
+  },
+  playbackBarContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 28,
+    width: "100%",
+  },
+  sideGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+    width: 100,
   },
   controlButton: {
     width: 50,
