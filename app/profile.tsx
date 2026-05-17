@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, Alert, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Theme } from '../src/theme';
 import { useAuthStore } from '../src/store/useAuthStore';
@@ -10,15 +10,26 @@ import { LogOut, Trophy, Book, Zap, ChevronRight, Settings, Bell, Shield, Credit
 export default function ProfileScreen() {
   const { user } = useAuthStore();
   const router = useRouter();
-  const [statsData, setStatsData] = useState({ completedTopics: {} as Record<string, boolean>, quizzesTaken: 0, averageAccuracy: 0 });
+  const [statsData, setStatsData] = useState({ completedTopics: {} as Record<string, boolean>, quizzesTaken: 0, averageAccuracy: 0, totalXP: 0 });
   const [loading, setLoading] = useState(true);
   const [showCertification, setShowCertification] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editBio, setEditBio] = useState('');
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     async function loadStats() {
       try {
         const stats = await ProgressService.getUserStats();
-        if (stats) setStatsData({ completedTopics: stats.completedTopics, quizzesTaken: stats.quizzesTaken, averageAccuracy: stats.averageAccuracy });
+        if (stats) {
+          setStatsData({
+            completedTopics: stats.completedTopics,
+            quizzesTaken: stats.quizzesTaken,
+            averageAccuracy: stats.averageAccuracy,
+            totalXP: stats.total_points || 0
+          });
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -32,6 +43,16 @@ export default function ProfileScreen() {
 
   const masteredCount = Object.values(statsData.completedTopics).filter(Boolean).length;
   const isCertified = true; // Unlocked by default for certificate showcase
+
+  const calculateLevel = (xp: number) => {
+    const level = Math.floor(xp / 100) + 1;
+    const currentLevelXP = xp % 100;
+    const nextLevelXP = 100;
+    const titles = ["Novice Coder", "Algorithm Enthusiast", "Data Structurer", "Code Optimizer", "Senior Researcher", "Principal Scientist", "Algorithm Fellow"];
+    const title = titles[Math.min(level - 1, titles.length - 1)];
+    return { level, currentLevelXP, nextLevelXP, title };
+  };
+  const { level, currentLevelXP, nextLevelXP, title } = calculateLevel(statsData.totalXP);
 
   const stats = [
     { label: 'Mastered', value: masteredCount.toString(), icon: Book, color: Theme.colors.primary },
@@ -60,18 +81,23 @@ export default function ProfileScreen() {
           </View>
           <Text style={styles.userName}>{user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student'}</Text>
           <Text style={styles.userEmail}>{user.email}</Text>
+          <Text style={styles.userBio}>{user.user_metadata?.bio || 'Passionate algorithm researcher & competitive programmer.'}</Text>
+          
+          <View style={styles.levelBadgeContainer}>
+            <View style={styles.levelBadge}>
+              <Trophy size={14} color="#fbbf24" />
+              <Text style={styles.levelBadgeText}>Level {level}: {title}</Text>
+            </View>
+            <View style={styles.xpBarBackground}>
+              <View style={[styles.xpBarFill, { width: `${(currentLevelXP / nextLevelXP) * 100}%` }]} />
+            </View>
+            <Text style={styles.xpText}>{statsData.totalXP} Total XP ({currentLevelXP}/{nextLevelXP} to next rank)</Text>
+          </View>
           
           <TouchableOpacity style={styles.editButton} onPress={() => {
-            if (Alert.prompt) {
-              Alert.prompt('Edit Name', 'Enter your display name:', async (newName) => {
-                if (newName) {
-                  await supabase.auth.updateUser({ data: { full_name: newName } });
-                  Alert.alert('Updated', 'Your name has been updated.');
-                }
-              });
-            } else {
-              Alert.alert('Edit Profile', 'Profile editing is available on the mobile app.');
-            }
+            setEditName(user.user_metadata?.full_name || user.email?.split('@')[0] || '');
+            setEditBio(user.user_metadata?.bio || 'Passionate algorithm researcher & competitive programmer.');
+            setShowEditModal(true);
           }}>
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>
@@ -237,6 +263,66 @@ export default function ProfileScreen() {
           </ScrollView>
         </SafeAreaView>
       </Modal>
+
+      <Modal
+        visible={showEditModal}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setShowEditModal(false)}
+      >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.editModalOverlay}>
+          <View style={styles.editModalContainer}>
+            <View style={styles.editModalHeader}>
+              <Text style={styles.editModalTitle}>Edit Profile</Text>
+              <TouchableOpacity onPress={() => setShowEditModal(false)}>
+                <Text style={styles.editModalCancel}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.editModalForm}>
+              <Text style={styles.inputLabel}>Display Name</Text>
+              <TextInput
+                style={styles.textInput}
+                value={editName}
+                onChangeText={setEditName}
+                placeholder="Enter your name"
+                placeholderTextColor={Theme.colors.textMuted}
+              />
+
+              <Text style={styles.inputLabel}>Researcher Bio</Text>
+              <TextInput
+                style={[styles.textInput, styles.textAreaInput]}
+                value={editBio}
+                onChangeText={setEditBio}
+                placeholder="Tell us about your research goals"
+                placeholderTextColor={Theme.colors.textMuted}
+                multiline
+                numberOfLines={3}
+              />
+
+              <TouchableOpacity
+                style={[styles.saveBtn, updating && { opacity: 0.7 }]}
+                onPress={async () => {
+                  setUpdating(true);
+                  await supabase.auth.updateUser({
+                    data: { full_name: editName, bio: editBio }
+                  });
+                  setUpdating(false);
+                  setShowEditModal(false);
+                  Alert.alert("Profile Updated", "Your profile details have been successfully updated!");
+                }}
+                disabled={updating}
+              >
+                {updating ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text style={styles.saveBtnText}>Save Changes</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -304,7 +390,125 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Theme.colors.textMuted,
     marginTop: 4,
-    marginBottom: Theme.spacing.lg,
+    marginBottom: Theme.spacing.xs,
+  },
+  userBio: {
+    fontSize: 14,
+    color: Theme.colors.textMuted,
+    textAlign: 'center',
+    paddingHorizontal: 32,
+    marginBottom: 16,
+    fontStyle: 'italic',
+  },
+  levelBadgeContainer: {
+    width: '100%',
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  levelBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(251, 191, 36, 0.15)',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: 'rgba(251, 191, 36, 0.4)',
+    marginBottom: 10,
+  },
+  levelBadgeText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#fbbf24',
+    marginLeft: 6,
+  },
+  xpBarBackground: {
+    width: '100%',
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    overflow: 'hidden',
+    marginBottom: 6,
+  },
+  xpBarFill: {
+    height: '100%',
+    backgroundColor: '#10b981',
+    borderRadius: 4,
+  },
+  xpText: {
+    fontSize: 12,
+    color: Theme.colors.textMuted,
+    fontWeight: '600',
+  },
+  editModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  editModalContainer: {
+    width: '100%',
+    backgroundColor: Theme.colors.surface,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: Theme.colors.border,
+    padding: 24,
+    ...Theme.shadows.lg,
+  },
+  editModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  editModalTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: Theme.colors.text,
+  },
+  editModalCancel: {
+    fontSize: 16,
+    color: Theme.colors.textMuted,
+    fontWeight: '600',
+  },
+  editModalForm: {
+    gap: 16,
+  },
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Theme.colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: -8,
+  },
+  textInput: {
+    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: Theme.colors.border,
+    color: 'white',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+  },
+  textAreaInput: {
+    height: 80,
+    textAlignVertical: 'top',
+  },
+  saveBtn: {
+    backgroundColor: Theme.colors.primary,
+    borderRadius: 14,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  saveBtnText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: 'white',
   },
   editButton: {
     paddingHorizontal: 20,
