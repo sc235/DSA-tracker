@@ -171,6 +171,10 @@ export const heapGenerator = (values: number[], type: 'max' | 'min'): HeapStep[]
     return steps;
 };
 
+export const heapSortGenerator = (values: number[]): HeapStep[] => {
+    return heapGenerator(values, 'max');
+};
+
 export const dpFibonacciGenerator = (n: number): Step[] => {
     const memo: (number | null)[] = new Array(n + 1).fill(null);
     const steps: Step[] = [];
