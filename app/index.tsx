@@ -57,6 +57,7 @@ export default function HomeScreen() {
 
       <View style={styles.header}>
         <View>
+          <Text style={styles.welcomeSubtitle}>Welcome to the DSA Platform 👋</Text>
           <Text style={styles.title}>Learning Path</Text>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
@@ -223,6 +224,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "800",
     color: Theme.colors.text,
+  },
+  welcomeSubtitle: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: Theme.colors.primary,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    marginBottom: 2,
   },
   statsRow: {
     flexDirection: "row",
