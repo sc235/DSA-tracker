@@ -85,19 +85,19 @@ export default function HomeScreen() {
             style={styles.compareButton}
             onPress={() => router.push("/compare")}
           >
-            <BookOpen color={Theme.colors.warning} size={20} />
+            <BookOpen color={Theme.colors.warning} size={18} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.battleButton}
             onPress={() => router.push("/battle")}
           >
-            <Swords color="white" size={20} />
+            <Swords color="white" size={18} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.profileButton}
             onPress={() => router.push("/profile")}
           >
-            <User color={Theme.colors.primary} size={20} />
+            <User color={Theme.colors.primary} size={18} />
           </TouchableOpacity>
         </View>
       </View>
@@ -219,28 +219,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
-    paddingTop: Theme.spacing.xl,
-    backgroundColor: "rgba(15, 23, 42, 0.9)",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    paddingTop: 48,
+    backgroundColor: "rgba(15, 23, 42, 0.95)",
     zIndex: 100,
+    width: "100%",
   },
   headerLeft: {
-    flex: 1,
-    paddingRight: 10,
+    flexShrink: 1,
+    paddingRight: 8,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "800",
     color: Theme.colors.text,
   },
   welcomeSubtitle: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "800",
     color: Theme.colors.primary,
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 2,
+    flexWrap: "wrap",
   },
   statsRow: {
     flexDirection: "row",
@@ -249,25 +251,26 @@ const styles = StyleSheet.create({
   stat: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: Theme.borderRadius.sm,
   },
   statText: {
     color: Theme.colors.text,
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
     marginLeft: 4,
   },
   headerActions: {
     flexDirection: "row",
     alignItems: "center",
+    flexShrink: 0,
   },
   compareButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: "rgba(245, 158, 11, 0.12)",
     justifyContent: "center",
     alignItems: "center",
@@ -276,9 +279,9 @@ const styles = StyleSheet.create({
     borderColor: "rgba(245, 158, 11, 0.25)",
   },
   battleButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: Theme.colors.secondary,
     justifyContent: "center",
     alignItems: "center",
@@ -286,9 +289,9 @@ const styles = StyleSheet.create({
     ...Theme.shadows.md,
   },
   profileButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: Theme.colors.surface,
     justifyContent: "center",
     alignItems: "center",
