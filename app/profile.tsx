@@ -31,7 +31,7 @@ export default function ProfileScreen() {
   if (!user) return null;
 
   const masteredCount = Object.values(statsData.completedTopics).filter(Boolean).length;
-  const isCertified = masteredCount >= 10;
+  const isCertified = true; // Unlocked by default for certificate showcase
 
   const stats = [
     { label: 'Mastered', value: masteredCount.toString(), icon: Book, color: Theme.colors.primary },
