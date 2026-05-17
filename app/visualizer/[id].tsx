@@ -102,6 +102,7 @@ export default function VisualizerScreen() {
   useEffect(() => {
     if (steps.length > 0 && currentStepIndex === steps.length - 1) {
       ProgressService.markTopicCompleted(id as string).catch(console.error);
+      setShowAI(true);
     }
 
     // Update AI explanation when step changes
