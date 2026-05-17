@@ -92,12 +92,19 @@ CREATE POLICY "Users can view their own progress." ON user_progress
 CREATE POLICY "Users can insert their own progress." ON user_progress
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+CREATE POLICY "Users can update their own progress." ON user_progress
+  FOR UPDATE USING (auth.uid() = user_id);
+
 -- Quiz Results Policies
 CREATE POLICY "Users can view their own quiz results." ON quiz_results
   FOR SELECT USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can insert their own quiz results." ON quiz_results
   FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own quiz results." ON quiz_results
+  FOR UPDATE USING (auth.uid() = user_id);
+
 -- Achievements Policies
 ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Achievements are viewable by everyone." ON achievements
@@ -110,6 +117,9 @@ CREATE POLICY "Users can view their own achievements." ON user_achievements
 
 CREATE POLICY "Users can insert their own achievements." ON user_achievements
   FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own achievements." ON user_achievements
+  FOR UPDATE USING (auth.uid() = user_id);
 
 -- ⚡ AUTOMATIC PROFILE CREATION
 -- Trigger to create a profile record when a new user signs up
