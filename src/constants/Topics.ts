@@ -205,9 +205,16 @@ export const DSA_TOPICS: Topic[] = [
     roadmapPosition: { x: -135, y: 450 },
     algorithms: [
       {
-        id: 'heap-sort',
-        name: 'Heap Sort',
-        description: 'Sort using a Binary Heap structure.',
+        id: 'max-heap',
+        name: 'Max-Heap (Build & Sort)',
+        description: 'Build a Max-Heap where parent >= children and extract root priority element.',
+        timeComplexity: 'O(n log n)',
+        spaceComplexity: 'O(1)',
+      },
+      {
+        id: 'min-heap',
+        name: 'Min-Heap (Priority Extraction)',
+        description: 'Build a Min-Heap where parent <= children and extract minimum priority element.',
         timeComplexity: 'O(n log n)',
         spaceComplexity: 'O(1)',
       },

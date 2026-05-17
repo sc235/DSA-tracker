@@ -32,7 +32,7 @@ import { TreeVisualizer } from "../../src/components/Visualizers/TreeVisualizer"
 import {
   dpFibonacciGenerator,
   hashInsertGenerator,
-  heapSortGenerator,
+  heapGenerator,
   trieInsertGenerator,
 } from "../../src/engine/AdvancedEngine";
 import { bfsGenerator, dfsGenerator } from "../../src/engine/GraphEngine";
@@ -160,8 +160,11 @@ export default function VisualizerScreen() {
     } else if (id === "hash-insert") {
       const generatedSteps = hashInsertGenerator([10, 25, 45, 12]);
       setSteps(generatedSteps);
-    } else if (id === "heap-sort") {
-      const generatedSteps = heapSortGenerator([50, 30, 20, 15, 10, 8, 5]);
+    } else if (id === "max-heap" || id === "heap-sort") {
+      const generatedSteps = heapGenerator([15, 30, 10, 50, 20, 8, 5], "max");
+      setSteps(generatedSteps);
+    } else if (id === "min-heap") {
+      const generatedSteps = heapGenerator([50, 30, 20, 15, 10, 8, 5], "min");
       setSteps(generatedSteps);
     } else if (id === "dp-fibonacci") {
       const generatedSteps = dpFibonacciGenerator(6);
