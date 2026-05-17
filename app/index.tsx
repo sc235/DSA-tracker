@@ -59,7 +59,9 @@ export default function HomeScreen() {
 
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Text style={styles.welcomeSubtitle}>WELCOME TO THE DSA PLATFORM 👋</Text>
+          <Text style={styles.welcomeSubtitle}>
+            WELCOME TO THE DSA PLATFORM 👋
+          </Text>
           <Text style={styles.title}>Learning Path</Text>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
