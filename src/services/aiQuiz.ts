@@ -46,6 +46,21 @@ const LINKED_LIST_SCENARIOS = [
   { q: 'A Sentinel Node in a linked list implementation is primarily utilized to:', a: 'Eliminate null boundary checks', exp: 'Dummy head or tail nodes simplify edge-case logic during insertions and removals.' }
 ];
 
+const STACKS_QUEUES_SCENARIOS = [
+  { q: 'Which data structure strictly follows Last-In-First-Out (LIFO) architectural semantics?', a: 'Stack', exp: 'The most recently pushed item is always the very first one to be popped off.' },
+  { q: 'Which data structure strictly follows First-In-First-Out (FIFO) architectural semantics?', a: 'Queue', exp: 'Elements are enqueued at the tail and serviced sequentially from the head.' },
+  { q: 'What is the asymptotic time complexity of pushing an element onto a standard stack?', a: 'O(1)', exp: 'Pushing strictly updates the top pointer in constant time without shifting elements.' },
+  { q: 'What is the asymptotic time complexity of enqueuing an element into a standard queue?', a: 'O(1)', exp: 'Enqueuing strictly assigns the tail pointer reference in constant time.' },
+  { q: 'In a Circular Queue of total capacity N, how is the next rear index mathematically calculated?', a: '(rear + 1) % N', exp: 'Modular arithmetic wraps the pointer seamlessly around the array boundary.' },
+  { q: 'When a call stack exceeds its allocated memory ceiling during infinite recursion, what fatal exception occurs?', a: 'Stack Overflow', exp: 'Unbounded recursive stack frames eventually exhaust all allocated thread memory.' },
+  { q: 'Which data structure is fundamentally utilized to parse and evaluate Reverse Polish (Postfix) notation arithmetic?', a: 'Stack', exp: 'Operands are pushed onto the stack until an operator pops them for evaluation.' },
+  { q: 'Which specific data structure is explicitly required to execute a Breadth-First Search (BFS) algorithm?', a: 'Queue', exp: 'A FIFO queue maintains unvisited node frontiers exactly level by level.' },
+  { q: 'In a Double-Ended Queue (Deque), insertion and deletion operations can be validly executed at:', a: 'Both Head and Tail', exp: 'Deques provide bi-directional constant time O(1) additions and removals.' },
+  { q: 'How many standard LIFO Stacks are minimally required to fully simulate a functional FIFO Queue?', a: '2 Stacks', exp: 'One stack handles incoming pushes while the second inverts order for popping.' },
+  { q: 'What is the time complexity of the peek (top) operation on a stack?', a: 'O(1)', exp: 'Peeking strictly inspects the value at the top pointer without removing it.' },
+  { q: 'A Priority Queue is most optimally implemented using which underlying data structure?', a: 'Binary Heap', exp: 'Heaps guarantee O(log n) insertions and high-priority extractions.' }
+];
+
 const TREE_SCENARIOS = [
   { q: 'What is the maximum height of a perfectly balanced Binary Search Tree containing N nodes?', a: 'O(log n)', exp: 'Each tree level doubles the capacity, constraining height to the base-2 logarithm of N.' },
   { q: 'In a valid Binary Search Tree, all keys located in the left subtree of a given node must be:', a: 'Smaller than the node key', exp: 'This fundamental invariant allows binary search elimination during tree navigation.' },
@@ -59,6 +74,45 @@ const TREE_SCENARIOS = [
   { q: 'In a Trie (Prefix Tree), edge transitions between parent and child nodes typically represent:', a: 'Individual characters', exp: 'Tries store associative strings by sharing common prefix paths.' }
 ];
 
+const HASH_TABLES_SCENARIOS = [
+  { q: 'What is the expected average time complexity for searching an arbitrary key in a Hash Table?', a: 'O(1)', exp: 'Direct indexing via hash codes allows constant-time associative memory lookups.' },
+  { q: 'What is the worst-case search time complexity in a Hash Table when all keys collide into the same bucket?', a: 'O(n)', exp: 'Severe collisions degrade the hash bucket into a linear singly linked list.' },
+  { q: 'Which technique handles hash collisions by storing colliding elements within a secondary linked list at the bucket?', a: 'Chaining', exp: 'Chaining dynamically allocates nodes outside the primary table array upon collision.' },
+  { q: 'Open Addressing collision resolution strategies include Linear Probing, Quadratic Probing, and:', a: 'Double Hashing', exp: 'Double hashing utilizes a secondary hash function to calculate dynamic step intervals.' },
+  { q: 'The mathematical ratio of stored elements to total available bucket slots in a hash map is formally designated as the:', a: 'Load Factor', exp: 'Load Factor = (Number of Elements) / (Table Capacity).' },
+  { q: 'When a hash table\'s load factor exceeds its threshold (e.g., 0.75), what automated internal process occurs?', a: 'Rehashing', exp: 'The table capacity is doubled, and all existing keys are re-indexed into new buckets.' },
+  { q: 'Perfect Hashing guarantees absolute O(1) worst-case lookup time under what specific condition?', a: 'Static known key set', exp: 'When keys are known in advance, two-level hashing eliminates collisions entirely.' },
+  { q: 'Which cryptographic property ensures that changing a single input bit drastically changes the resulting hash output?', a: 'Avalanche Effect', exp: 'High dispersion prevents clustering and maintains uniform bucket distribution.' },
+  { q: 'In a hash map with N buckets and M total items utilizing chaining, what is the expected average bucket chain length?', a: 'M / N', exp: 'Uniform hashing distributes elements evenly across all available slots.' },
+  { q: 'Why do Hash Tables generally consume significantly more memory than sorted arrays containing identical items?', a: 'Bucket allocation overhead', exp: 'Hash maps must maintain empty table slots and explicit chaining node pointers.' }
+];
+
+const HEAPS_SCENARIOS = [
+  { q: 'In a valid Max-Heap binary tree structure, the numerical key of any parent node is always:', a: 'Greater than or equal to its children', exp: 'This foundational invariant ensures that the absolute maximum element resides at the root.' },
+  { q: 'What is the asymptotic time complexity of extracting the maximum root element from a Binary Max-Heap of N items?', a: 'O(log n)', exp: 'Replacing the root with the last leaf and bubbling down takes logarithmic tree depth time.' },
+  { q: 'What is the time complexity of finding (peeking) the minimum element in a standard Min-Heap?', a: 'O(1)', exp: 'The minimum element is permanently maintained at index 1 without requiring traversal.' },
+  { q: 'When inserting a brand new element at the bottom leaf of a heap, what operation restores the structural invariant?', a: 'Heapify-Up / Bubble-Up', exp: 'The item is repeatedly swapped upward with its parent until ordering is valid.' },
+  { q: 'In a 1-indexed contiguous array representation of a binary heap, the left child of node i is situated exactly at index:', a: '2 * i', exp: 'Mathematical array indexing eliminates the memory overhead of node pointers.' },
+  { q: 'In a 1-indexed contiguous array representation of a binary heap, the parent of node i is situated exactly at index:', a: 'floor(i / 2)', exp: 'Integer division instantly isolates the parent node index in O(1) time.' },
+  { q: 'What is the time complexity of building a complete binary heap from an unsorted array using Floyd\'s bottom-up algorithm?', a: 'O(n)', exp: 'Bottom-up heap construction runs in linear time because lower levels require shorter bubble-down distances.' },
+  { q: 'Heap Sort operates in guaranteed O(n log n) time and is formally classified as what kind of sorting algorithm?', a: 'In-place comparison sort', exp: 'It maintains sorted and unsorted boundaries directly within the input array.' },
+  { q: 'Which specific data structure is strictly utilized inside Dijkstra\'s algorithm to efficiently select minimal edge weights?', a: 'Min-Heap / Priority Queue', exp: 'Min-heaps extract the shortest unvisited frontier distance in O(log V) time.' },
+  { q: 'A d-ary Heap differs from a standard binary heap by allowing each parent node to possess up to:', a: 'd children', exp: 'Increasing branching factor reduces tree height, accelerating insertion operations.' }
+];
+
+const TRIES_SCENARIOS = [
+  { q: 'A Trie data structure is most famously optimized for what specific computational use case?', a: 'Prefix string matching', exp: 'Tries store associative strings by sharing common initial character prefixes.' },
+  { q: 'What is the time complexity of searching for a target word of length L inside a Trie containing N total words?', a: 'O(L)', exp: 'Search time is strictly proportional to key length L, completely independent of word count N.' },
+  { q: 'In a standard Trie representing lowercase English vocabulary, each internal node maintains an array of pointers of size:', a: '26 pointers', exp: 'Each index corresponds directly to an alphabet character (a through z).' },
+  { q: 'To explicitly signify that a specific node represents the final character of a valid inserted word, what is utilized?', a: 'IsEndOfWord boolean flag', exp: 'Terminal flags distinguish complete words from partial internal prefixes.' },
+  { q: 'What is the primary architectural disadvantage of a standard Trie compared to a Binary Search Tree?', a: 'High memory consumption', exp: 'Allocating large, sparse pointer arrays at every single node consumes massive heap space.' },
+  { q: 'A compressed variant of a Trie where single-child branches are merged into continuous string edges is formally called a:', a: 'Radix Tree / Patricia Trie', exp: 'Path compression eliminates redundant single-character node allocations.' },
+  { q: 'Which data structure is exceptionally optimal for implementing an IP routing longest-prefix match lookup table?', a: 'Trie', exp: 'Bitwise or character tries isolate matching routing prefixes instantly.' },
+  { q: 'What is the worst-case space complexity of storing W words of length L in an uncompressed Trie?', a: 'O(W * L * Alphabet Size)', exp: 'In the worst case with zero shared prefixes, every letter allocates a full pointer array.' },
+  { q: 'In a Suffix Trie containing a base string of length N, verifying if any substring pattern of length M exists takes:', a: 'O(M)', exp: 'Suffix tries allow lightning-fast substring verification proportional strictly to pattern length.' },
+  { q: 'When deleting an inserted word from a Trie, when is it structurally safe to delete an ancestral node?', a: 'When it has no other children', exp: 'Pruning must stop immediately upon encountering a shared branching prefix.' }
+];
+
 const GRAPH_SCENARIOS = [
   { q: 'Which graph traversal algorithm is specifically optimal for discovering shortest unweighted paths?', a: 'Breadth-First Search (BFS)', exp: 'BFS radiates outward in uniform concentric layers, ensuring first contact is optimal.' },
   { q: 'A graph structure that contains zero closed loops or cycles is formally designated as:', a: 'Acyclic Graph', exp: 'Directed Acyclic Graphs (DAGs) are vital for dependency scheduling and topological sorts.' },
@@ -70,6 +124,19 @@ const GRAPH_SCENARIOS = [
   { q: 'Kruskal\'s Minimum Spanning Tree algorithm relies on what core auxiliary data structure to prevent cycles?', a: 'Disjoint-Set (Union-Find)', exp: 'Union-Find tracks connected components and merges sets efficiently.' },
   { q: 'A Topological Sort ordering is strictly valid and possible only on what specific classification of graph?', a: 'Directed Acyclic Graph (DAG)', exp: 'Any cyclical dependency makes linear pre-requisite ordering impossible.' },
   { q: 'What is the space complexity of storing a dense graph with V vertices using an Adjacency Matrix?', a: 'O(V²)', exp: 'A matrix allocates a complete V×V grid in memory regardless of edge sparsity.' }
+];
+
+const DP_SCENARIOS = [
+  { q: 'Dynamic Programming is fundamentally distinguished by what two core algorithmic properties?', a: 'Overlapping Subproblems & Optimal Substructure', exp: 'Problems must decompose into reusable sub-challenges whose optimal solutions construct the global optimum.' },
+  { q: 'The top-down DP strategy that caches computed results in a lookup map to prevent redundant recursion is called:', a: 'Memoization', exp: 'Memoization intercepts recursive calls, returning cached answers instantly if previously solved.' },
+  { q: 'The bottom-up DP strategy that iteratively populates an evaluation table starting from atomic base cases is called:', a: 'Tabulation', exp: 'Tabulation completely eliminates recursive call stack overhead by iterating systematically.' },
+  { q: 'What is the asymptotic time complexity of computing the Nth Fibonacci number using optimized Dynamic Programming?', a: 'O(n)', exp: 'Memoization or tabulation ensures each Fibonacci index is computed exactly once.' },
+  { q: 'What is the space complexity of computing the Nth Fibonacci number using constant space bottom-up iteration?', a: 'O(1)', exp: 'Maintaining strictly the last two computed numbers eliminates auxiliary table storage.' },
+  { q: 'The 0/1 Knapsack problem with item count N and weight capacity W has what overall time complexity using DP?', a: 'O(N * W)', exp: 'The tabulation grid maintains states for all N items across all possible weight sub-capacities W.' },
+  { q: 'Which famous DP algorithm efficiently computes the Longest Common Subsequence (LCS) between two strings X and Y?', a: 'Needleman-Wunsch / Tabulation grid', exp: 'A 2D matrix tracks matching character sequences across string boundaries.' },
+  { q: 'Why is Dynamic Programming vastly superior to naive recursion for calculating Matrix Chain multiplications?', a: 'Eliminates exponential recomputation', exp: 'Naive recursion re-evaluates identical matrix bracketings exponentially O(2^n) times.' },
+  { q: 'Kadane\'s algorithm for finding the Maximum Subarray Sum operates in what guaranteed time complexity?', a: 'O(n)', exp: 'Kadane\'s algorithm maintains a running local maximum across a single linear array pass.' },
+  { q: 'In Bellman-Ford\'s shortest path algorithm, edge relaxations are performed iteratively based on what paradigm?', a: 'Dynamic Programming', exp: 'It systematically relaxes path distances across expanding edge count horizons.' }
 ];
 
 const getRandomElement = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
@@ -99,13 +166,35 @@ export const AIQuizService = {
         scenario = getRandomElement(LINKED_LIST_SCENARIOS);
         poolOptions = ['O(1)', 'O(n)', '2 pointers', 'Insertion at Start', 'Head Node', 'Tail Node', 'Scattered memory allocation', 'Pointer to previous node', 'Floyd\'s Tortoise and Hare'];
         break;
+      case 'stacks-queues':
+      case 'stacks':
+      case 'queues':
+        scenario = getRandomElement(STACKS_QUEUES_SCENARIOS);
+        poolOptions = ['Stack', 'Queue', 'O(1)', 'O(n)', '(rear + 1) % N', 'Stack Overflow', 'Both Head and Tail', '2 Stacks', 'Binary Heap', 'Chaining'];
+        break;
       case 'trees':
         scenario = getRandomElement(TREE_SCENARIOS);
         poolOptions = ['O(log n)', 'O(n)', 'Smaller than the node key', 'In-order Traversal', 'Pre-order Traversal', 'No child nodes', 'Queue (FIFO)', '1', '2 times', 'Individual characters'];
         break;
+      case 'hash-tables':
+        scenario = getRandomElement(HASH_TABLES_SCENARIOS);
+        poolOptions = ['O(1)', 'O(n)', 'Chaining', 'Double Hashing', 'Load Factor', 'Rehashing', 'Static known key set', 'Avalanche Effect', 'M / N', 'Bucket allocation overhead'];
+        break;
+      case 'heaps':
+        scenario = getRandomElement(HEAPS_SCENARIOS);
+        poolOptions = ['Greater than or equal to its children', 'O(log n)', 'O(1)', 'Heapify-Up / Bubble-Up', '2 * i', 'floor(i / 2)', 'O(n)', 'In-place comparison sort', 'Min-Heap / Priority Queue', 'd children'];
+        break;
+      case 'tries':
+        scenario = getRandomElement(TRIES_SCENARIOS);
+        poolOptions = ['Prefix string matching', 'O(L)', '26 pointers', 'IsEndOfWord boolean flag', 'High memory consumption', 'Radix Tree / Patricia Trie', 'Trie', 'O(W * L * Alphabet Size)', 'O(M)', 'When it has no other children'];
+        break;
       case 'graphs':
         scenario = getRandomElement(GRAPH_SCENARIOS);
         poolOptions = ['Breadth-First Search (BFS)', 'Acyclic Graph', 'O(V + E)', 'Explicit directed edge from i to j', 'Negative weight edges', 'Bellman-Ford Algorithm', 'Min-Priority Queue (Heap)', 'Disjoint-Set (Union-Find)', 'Directed Acyclic Graph (DAG)', 'O(V²)'];
+        break;
+      case 'dp':
+        scenario = getRandomElement(DP_SCENARIOS);
+        poolOptions = ['Overlapping Subproblems & Optimal Substructure', 'Memoization', 'Tabulation', 'O(n)', 'O(1)', 'O(N * W)', 'Needleman-Wunsch / Tabulation grid', 'Eliminates exponential recomputation', 'Dynamic Programming'];
         break;
       default:
         scenario = {
