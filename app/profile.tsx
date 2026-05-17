@@ -42,7 +42,7 @@ export default function ProfileScreen() {
   if (!user) return null;
 
   const masteredCount = Object.values(statsData.completedTopics).filter(Boolean).length;
-  const isCertified = true; // Unlocked by default for certificate showcase
+  const isCertified = masteredCount >= 10;
 
   const calculateLevel = (xp: number) => {
     const level = Math.floor(xp / 100) + 1;
