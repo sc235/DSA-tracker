@@ -197,7 +197,7 @@ export default function VisualizerScreen() {
       const generatedSteps = bstSearchGenerator(initialData, target);
       setSteps(generatedSteps);
     } else if (id === "bst-insert") {
-      const generatedSteps = bstInsertGenerator(initialData, 45);
+      const generatedSteps = bstInsertGenerator(initialData, 65);
       setSteps(generatedSteps);
     } else if (id === "tree-traversal-in") {
       const generatedSteps = treeTraversalGenerator("in");

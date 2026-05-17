@@ -189,8 +189,10 @@ export const bstInsertGenerator = (
 
     if (newValue < current.value) {
       if (!current.leftId) {
+        const newNodeId = `n${newValue}_inserted`;
+        const updatedTreeNodes = treeNodes.map(n => n.id === current.id ? { ...n, leftId: newNodeId } : n);
         const newNode: TreeNode = {
-          id: `n${newValue}`,
+          id: newNodeId,
           value: newValue,
           leftId: null,
           rightId: null,
@@ -199,7 +201,7 @@ export const bstInsertGenerator = (
         };
         highlightedEdges.push(`${current.id}-${newNode.id}`);
         steps.push({
-          treeNodes: [...treeNodes, newNode],
+          treeNodes: [...updatedTreeNodes, newNode],
           highlightedNodeIds: [newNode.id],
           highlightedEdgeIds: [...highlightedEdges],
           activeIndices: [],
@@ -213,8 +215,10 @@ export const bstInsertGenerator = (
       currentId = current.leftId;
     } else {
       if (!current.rightId) {
+        const newNodeId = `n${newValue}_inserted`;
+        const updatedTreeNodes = treeNodes.map(n => n.id === current.id ? { ...n, rightId: newNodeId } : n);
         const newNode: TreeNode = {
-          id: `n${newValue}`,
+          id: newNodeId,
           value: newValue,
           leftId: null,
           rightId: null,
@@ -223,7 +227,7 @@ export const bstInsertGenerator = (
         };
         highlightedEdges.push(`${current.id}-${newNode.id}`);
         steps.push({
-          treeNodes: [...treeNodes, newNode],
+          treeNodes: [...updatedTreeNodes, newNode],
           highlightedNodeIds: [newNode.id],
           highlightedEdgeIds: [...highlightedEdges],
           activeIndices: [],
