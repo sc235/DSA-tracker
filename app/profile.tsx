@@ -10,14 +10,14 @@ import { LogOut, Trophy, Book, Zap, ChevronRight, Settings, Bell, Shield, Credit
 export default function ProfileScreen() {
   const { user } = useAuthStore();
   const router = useRouter();
-  const [statsData, setStatsData] = useState({ completedTopics: 0, quizzesTaken: 0, averageAccuracy: 0 });
+  const [statsData, setStatsData] = useState({ completedTopics: {} as Record<string, boolean>, quizzesTaken: 0, averageAccuracy: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStats() {
       try {
         const stats = await ProgressService.getUserStats();
-        if (stats) setStatsData(stats);
+        if (stats) setStatsData({ completedTopics: stats.completedTopics, quizzesTaken: stats.quizzesTaken, averageAccuracy: stats.averageAccuracy });
       } catch (error) {
         console.error(error);
       } finally {
@@ -30,7 +30,7 @@ export default function ProfileScreen() {
   if (!user) return null;
 
   const stats = [
-    { label: 'Mastered', value: statsData.completedTopics.toString(), icon: Book, color: Theme.colors.primary },
+    { label: 'Mastered', value: Object.values(statsData.completedTopics).filter(Boolean).length.toString(), icon: Book, color: Theme.colors.primary },
     { label: 'Accuracy', value: `${Math.round(statsData.averageAccuracy)}%`, icon: Trophy, color: Theme.colors.secondary },
     { label: 'Quizzes', value: statsData.quizzesTaken.toString(), icon: Zap, color: Theme.colors.warning },
   ];
@@ -58,12 +58,16 @@ export default function ProfileScreen() {
           <Text style={styles.userEmail}>{user.email}</Text>
           
           <TouchableOpacity style={styles.editButton} onPress={() => {
-            Alert.prompt?.('Edit Name', 'Enter your display name:', async (newName) => {
-              if (newName) {
-                await supabase.auth.updateUser({ data: { full_name: newName } });
-                Alert.alert('Updated', 'Your name has been updated.');
-              }
-            }) || Alert.alert('Edit Profile', 'Profile editing is available on the mobile app.');
+            if (Alert.prompt) {
+              Alert.prompt('Edit Name', 'Enter your display name:', async (newName) => {
+                if (newName) {
+                  await supabase.auth.updateUser({ data: { full_name: newName } });
+                  Alert.alert('Updated', 'Your name has been updated.');
+                }
+              });
+            } else {
+              Alert.alert('Edit Profile', 'Profile editing is available on the mobile app.');
+            }
           }}>
             <Text style={styles.editButtonText}>Edit Profile</Text>
           </TouchableOpacity>

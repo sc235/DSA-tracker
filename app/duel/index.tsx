@@ -151,7 +151,7 @@ export default function DuelLobbyScreen() {
     
     if (action === 'accepted') {
         router.push({
-            pathname: '/duel/game',
+            pathname: '/duel/game' as any,
             params: { opponent: incomingChallenge.challenger.username, challengeId: incomingChallenge.id }
         });
     }
@@ -170,7 +170,7 @@ export default function DuelLobbyScreen() {
           setSearchStatus('Match Found!');
           setTimeout(() => {
             router.push({
-                pathname: '/duel/game',
+                pathname: '/duel/game' as any,
                 params: { opponent: 'CodeWarrior_42' }
             });
             setIsSearching(false);
@@ -361,7 +361,7 @@ export default function DuelLobbyScreen() {
             </View>
             <View style={styles.ruleRow}>
                 <View style={styles.ruleDot} />
-                <Text style={styles.ruleText}>Accuracy > Speed. Wrong answers end the duel.</Text>
+                <Text style={styles.ruleText}>Accuracy &gt; Speed. Wrong answers end the duel.</Text>
             </View>
             <View style={styles.ruleRow}>
                 <View style={styles.ruleDot} />
@@ -378,6 +378,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  pulseCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(99, 102, 241, 0.15)',
+    position: 'absolute',
   },
   content: {
     flex: 1,

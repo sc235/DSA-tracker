@@ -1,8 +1,10 @@
 import { Stack, useRouter, useSegments, useRootNavigationState } from 'expo-router';
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useAuthStore } from '../src/store/useAuthStore';
 import { supabase } from '../src/services/supabase';
 import { usePresence } from '../src/hooks/usePresence';
+import { NotificationService } from '../src/services/notificationService';
 
 export default function RootLayout() {
   const { user, setUser, setSession } = useAuthStore();
@@ -12,6 +14,13 @@ export default function RootLayout() {
 
   // Update online presence for duel matchmaking (only when logged in)
   usePresence();
+
+  // Request notification permissions on app start
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      NotificationService.requestPermissions();
+    }
+  }, []);
 
   useEffect(() => {
     // Check for initial session
@@ -62,6 +71,7 @@ export default function RootLayout() {
       <Stack.Screen name="interview/index" options={{ title: 'Interview' }} />
       <Stack.Screen name="profile" options={{ title: 'Profile' }} />
       <Stack.Screen name="social" options={{ title: 'Social' }} />
+      <Stack.Screen name="compare" options={{ title: 'Compare' }} />
     </Stack>
   );
 }

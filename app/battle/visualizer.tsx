@@ -77,7 +77,7 @@ export default function BattleVisualizerScreen() {
   };
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isPlaying) {
       interval = setInterval(() => {
         let bothFinished = true;

@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { NotificationService } from './notificationService';
 
 export const ProgressService = {
   async saveQuizResult(topicId: string, score: number, total: number) {
@@ -91,6 +92,9 @@ export const ProgressService = {
     
     // Award Mastery XP
     await this.addXP(50);
+
+    // 🔔 Send push notifications for topic completion & unlocked topics
+    await NotificationService.onTopicCompleted(topicId);
   },
 
   async getUserStats() {

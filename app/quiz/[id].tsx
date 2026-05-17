@@ -134,8 +134,8 @@ export default function QuizScreen() {
           const isCorrect = option === currentQuestion.correctAnswer;
           const isSelected = option === selectedOption;
           
-          let optionStyle = styles.option;
-          let textStyle = styles.optionText;
+          let optionStyle: any = [styles.option];
+          let textStyle: any = [styles.optionText];
           
           if (showResult) {
             if (isCorrect) {

@@ -1,5 +1,5 @@
 import { Stack, useFocusEffect, useRouter } from "expo-router";
-import { Swords, Trophy, User, Zap } from "lucide-react-native";
+import { BookOpen, Swords, Trophy, User, Zap } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   SafeAreaView,
@@ -23,7 +23,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const NODE_OFFSET_X = SCREEN_WIDTH / 2 - NODE_WIDTH / 2;
-  const [completedTopics, setCompletedTopics] = useState<string[]>([]);
+  const [completedTopics, setCompletedTopics] = useState<Record<string, boolean>>({});
   const [totalPoints, setTotalPoints] = useState(0);
 
   useFocusEffect(
@@ -76,6 +76,12 @@ export default function HomeScreen() {
           </View>
         </View>
         <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.compareButton}
+            onPress={() => router.push("/compare")}
+          >
+            <BookOpen color={Theme.colors.warning} size={22} />
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.battleButton}
             onPress={() => router.push("/battle")}
@@ -239,6 +245,17 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  compareButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(245, 158, 11, 0.12)',
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(245, 158, 11, 0.25)',
   },
   battleButton: {
     width: 48,

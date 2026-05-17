@@ -396,69 +396,97 @@ export default function VisualizerScreen() {
       </View>
 
       {!isPracticeMode && (
-        <View style={styles.speedSelector}>
-          <Text style={styles.speedLabel}>Playback Speed</Text>
-          <View style={styles.speedButtons}>
-            {[0.5, 1, 2].map((s) => (
+        <View style={styles.speedSelectorWrapper}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.speedSelectorScroll}
+            contentContainerStyle={styles.speedSelectorContent}
+          >
+            <View style={styles.speedGroup}>
+              <Text style={styles.speedLabel}>Speed</Text>
+              <View style={styles.speedButtons}>
+                {[0.5, 1, 2].map((s) => (
+                  <TouchableOpacity
+                    key={s}
+                    style={[
+                      styles.speedButton,
+                      playbackSpeed === 500 / s && styles.activeSpeedButton,
+                    ]}
+                    onPress={() => setPlaybackSpeed(500 / s)}
+                  >
+                    <Text
+                      style={[
+                        styles.speedButtonText,
+                        playbackSpeed === 500 / s && styles.activeSpeedButtonText,
+                      ]}
+                    >
+                      {s}x
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.verticalDivider} />
+
+            <View style={styles.actionGroup}>
               <TouchableOpacity
-                key={s}
                 style={[
-                  styles.speedButton,
-                  playbackSpeed === 500 / s && styles.activeSpeedButton,
+                  styles.featureBtn,
+                  isScientistMode && styles.activeFeatureBtn,
                 ]}
-                onPress={() => setPlaybackSpeed(500 / s)}
+                onPress={() => {
+                  setIsScientistMode(!isScientistMode);
+                  if (showAI) setShowAI(false);
+                }}
               >
+                <Sparkles
+                  color={isScientistMode ? Theme.colors.primary : Theme.colors.warning}
+                  size={16}
+                />
                 <Text
                   style={[
-                    styles.speedButtonText,
-                    playbackSpeed === 500 / s && styles.activeSpeedButtonText,
+                    styles.featureBtnText,
+                    isScientistMode && styles.activeFeatureBtnText,
                   ]}
                 >
-                  {s}x
+                  Scientist
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.controlBtn,
-              isScientistMode && styles.activeControlBtn,
-            ]}
-            onPress={() => {
-              setIsScientistMode(!isScientistMode);
-              if (showAI) setShowAI(false);
-            }}
-          >
-            <Sparkles
-              color={isScientistMode ? Theme.colors.primary : "white"}
-              size={20}
-            />
-            <Text style={styles.controlBtnText}>Scientist</Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.controlBtn, showAI && styles.activeControlBtn]}
-            onPress={() => {
-              setShowAI(!showAI);
-              if (isScientistMode) setIsScientistMode(false);
-              // Refresh explanation for current step
-              setAiExplanation(
-                getAIExplanation(
-                  id as string,
-                  id as string,
-                  steps[currentStepIndex],
-                  currentStepIndex,
-                  currentStepIndex === steps.length - 1
-                ),
-              );
-            }}
-          >
-            <Gamepad2
-              color={showAI ? Theme.colors.primary : "white"}
-              size={20}
-            />
-            <Text style={styles.controlBtnText}>AI Tutor</Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.featureBtn, showAI && styles.activeFeatureBtn]}
+                onPress={() => {
+                  setShowAI(!showAI);
+                  if (isScientistMode) setIsScientistMode(false);
+                  // Refresh explanation for current step
+                  setAiExplanation(
+                    getAIExplanation(
+                      id as string,
+                      id as string,
+                      steps[currentStepIndex],
+                      currentStepIndex,
+                      currentStepIndex === steps.length - 1
+                    ),
+                  );
+                }}
+              >
+                <Gamepad2
+                  color={showAI ? Theme.colors.primary : Theme.colors.success}
+                  size={16}
+                />
+                <Text
+                  style={[
+                    styles.featureBtnText,
+                    showAI && styles.activeFeatureBtnText,
+                  ]}
+                >
+                  AI Tutor
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       )}
 
@@ -592,74 +620,16 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  placeholder: {
-    width: 50,
-  },
-  aiOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    justifyContent: "flex-end",
-    zIndex: 100,
-  },
-  aiCard: {
-    backgroundColor: Theme.colors.surface,
-    borderTopLeftRadius: Theme.borderRadius.xl,
-    borderTopRightRadius: Theme.borderRadius.xl,
-    padding: Theme.spacing.xl,
-    maxHeight: "60%",
-    borderTopWidth: 2,
-    borderTopColor: Theme.colors.warning,
-  },
-  aiHeader: {
+  controlBtn: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Theme.spacing.lg,
-  },
-  aiTitle: {
-    color: Theme.colors.text,
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 8,
-    flex: 1,
-  },
-  closeText: {
-    color: Theme.colors.primary,
-    fontWeight: "bold",
-  },
-  aiScroll: {
-    marginBottom: Theme.spacing.xl,
-  },
-  aiText: {
-    color: Theme.colors.text,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: Theme.spacing.lg,
-  },
-  analogyBox: {
-    backgroundColor: "rgba(251, 191, 36, 0.1)",
-    padding: Theme.spacing.md,
-    borderRadius: Theme.borderRadius.md,
-    marginBottom: Theme.spacing.md,
-    borderLeftWidth: 4,
-    borderLeftColor: Theme.colors.warning,
-  },
-  analogyTitle: {
-    color: Theme.colors.warning,
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 4,
-    textTransform: "uppercase",
-  },
-  analogyText: {
-    color: Theme.colors.text,
-    fontSize: 14,
-    fontStyle: "italic",
-  },
-  proTip: {
-    color: Theme.colors.success,
-    fontSize: 14,
-    fontWeight: "500",
-    marginTop: Theme.spacing.sm,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    gap: 6,
   },
   cardHeader: {
     flexDirection: "row",
@@ -714,15 +684,36 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
   },
-  speedSelector: {
+  speedSelectorWrapper: {
     backgroundColor: Theme.colors.surface,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: Theme.spacing.xl,
-    paddingVertical: Theme.spacing.md,
     borderTopWidth: 1,
     borderTopColor: "rgba(255,255,255,0.05)",
+  },
+  speedSelectorScroll: {
+    maxHeight: 64,
+  },
+  speedSelectorContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: Theme.spacing.lg,
+    paddingVertical: 12,
+    gap: 16,
+  },
+  speedGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  actionGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  verticalDivider: {
+    width: 1,
+    height: 24,
+    backgroundColor: "rgba(255,255,255,0.1)",
+    marginHorizontal: 2,
   },
   speedLabel: {
     color: Theme.colors.textMuted,
@@ -753,6 +744,30 @@ const styles = StyleSheet.create({
   },
   activeSpeedButtonText: {
     color: "white",
+  },
+  featureBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.05)",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.1)",
+    gap: 6,
+  },
+  activeFeatureBtn: {
+    backgroundColor: "rgba(99, 102, 241, 0.15)",
+    borderColor: Theme.colors.primary,
+  },
+  featureBtnText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  activeFeatureBtnText: {
+    color: Theme.colors.primary,
+    fontWeight: "bold",
   },
   aiOverlay: {
     position: "absolute",

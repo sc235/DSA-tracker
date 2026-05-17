@@ -88,7 +88,7 @@ export const DSA_TOPICS: Topic[] = [
     icon: 'link',
     complexity: 'O(n)',
     prerequisites: ['searching'],
-    roadmapPosition: { x: -100, y: 300 },
+    roadmapPosition: { x: -135, y: 300 },
     algorithms: [
       {
         id: 'linked-list-search',
@@ -138,7 +138,7 @@ export const DSA_TOPICS: Topic[] = [
     icon: 'tree',
     complexity: 'O(log n)',
     prerequisites: ['stacks-queues'],
-    roadmapPosition: { x: 100, y: 300 },
+    roadmapPosition: { x: 135, y: 300 },
     algorithms: [
       {
         id: 'bst-search',
@@ -202,7 +202,7 @@ export const DSA_TOPICS: Topic[] = [
     icon: 'mountain',
     complexity: 'O(log n)',
     prerequisites: ['hash-tables'],
-    roadmapPosition: { x: -100, y: 450 },
+    roadmapPosition: { x: -135, y: 450 },
     algorithms: [
       {
         id: 'heap-sort',
@@ -220,7 +220,7 @@ export const DSA_TOPICS: Topic[] = [
     icon: 'alphabet-latin',
     complexity: 'O(L)',
     prerequisites: ['hash-tables'],
-    roadmapPosition: { x: 100, y: 450 },
+    roadmapPosition: { x: 135, y: 450 },
     algorithms: [
       {
         id: 'trie-insert',

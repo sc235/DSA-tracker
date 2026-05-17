@@ -3,7 +3,7 @@ import { useAlgorithmStore } from '../store/useAlgorithmStore';
 
 export const useAlgorithmPlayer = () => {
   const { isPlaying, nextStep, playbackSpeed } = useAlgorithmStore();
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (isPlaying) {
