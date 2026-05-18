@@ -196,24 +196,27 @@ export const getAIExplanation = (
   };
 };
 
-// ── AI Code Solver & Assistant Service ──────────────────────────────────
-// Used by the Assistant screen to explain and solve student algorithm queries.
+// ── AI Study Companion & Concept Tutor ──────────────────────────────────
+// Used by the Tutor screen to explain difficult DSA concepts with simple analogies.
 
-const TUTOR_SOLUTIONS: Record<string, string[]> = {
+const CONCEPT_EXPLANATIONS: Record<string, string[]> = {
   search: [
-    `🎯 **Problem Analysis & Solution: Binary Search**\n\nTo locate an element efficiently in a monotonically sorted dataset, we utilize Binary Search rather than linear scanning.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction binarySearch(arr: number[], target: number): number {\n  let left = 0, right = arr.length - 1;\n  while (left <= right) {\n    let mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return -1;\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(log n)\` because we eliminate half the search space on each probe.\n- **Space Complexity**: \`O(1)\` constant auxiliary memory using iterative pointers.`
+    `🎯 **Understanding Binary Search**\n\nWhen you search for a word in a 1,000-page dictionary, you don't read page 1, then page 2, all the way to page 500. You flip open the middle! If the word you want comes earlier alphabetically, you ignore the entire right half of the book.\n\nBinary Search does exactly this in computer memory. By continually cutting the remaining search space in half, it finds any item in logarithmic time (\`O(log n)\`). It turns 1,000,000 checks into just 20 checks!`
   ],
   sort: [
-    `🎯 **Problem Analysis & Solution: Efficient Sorting (Quick Sort)**\n\nFor general-purpose in-place sorting, Quick Sort provides superior CPU cache locality compared to Merge Sort.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction quickSort(arr: number[]): number[] {\n  if (arr.length <= 1) return arr;\n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(n log n)\` expected partition depth.\n- **Space Complexity**: \`O(log n)\` call stack depth.`
+    `🎯 **Understanding Quick Sort & Merge Sort**\n\nSorting is like organizing a chaotic library of books by author name.\n\n- **Merge Sort** uses 'Divide & Conquer': You split the giant pile of books in half, hand them to two assistants to sort, and then zip the two organized piles together.\n- **Quick Sort** chooses one random book (the 'pivot'). Every book earlier in the alphabet is placed to its left, and every book later is placed to its right. Repeating this partitions the library at lightning speed!`
   ],
   tree: [
-    `🎯 **Problem Analysis & Solution: Tree & Graph Traversal**\n\nTo traverse a hierarchical tree or graph level-by-level, we use Breadth-First Search (BFS) with a First-In-First-Out (FIFO) queue.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction bfs(root: TreeNode | null): number[] {\n  if (!root) return [];\n  const queue: TreeNode[] = [root];\n  const result: number[] = [];\n  while (queue.length > 0) {\n    const curr = queue.shift()!;\n    result.push(curr.val);\n    if (curr.left) queue.push(curr.left);\n    if (curr.right) queue.push(curr.right);\n  }\n  return result;\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(V + E)\` visiting every vertex precisely once.\n- **Space Complexity**: \`O(w)\` where \`w\` is the maximum width horizon of the tree.`
+    `🎯 **Understanding Trees & Graphs**\n\nImagine your family tree or a company organizational chart. You have one CEO (the Root Node) at the top, who manages Vice Presidents (Child Nodes), who manage Team Leads (Sub-trees).\n\nWhen we want to search through this structure:\n- **Breadth-First Search (BFS)** checks everyone level-by-level (all VPs first, then all Team Leads).\n- **Depth-First Search (DFS)** follows one specific management chain all the way down to the newest intern before checking another branch.`
   ],
   hash: [
-    `🎯 **Problem Analysis & Solution: Hash Table & Collision Resolution**\n\nTo achieve constant-time associative lookups, we utilize Hash Tables with Chaining or Open Addressing to resolve index collisions.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nclass HashTable {\n  private table = new Array(128).fill(null).map(() => [] as [string, any][]);\n  private hash(key: string): number {\n    return key.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 128;\n  }\n  set(key: string, value: any) {\n    const bucket = this.table[this.hash(key)];\n    const item = bucket.find(x => x[0] === key);\n    if (item) item[1] = value;\n    else bucket.push([key, value]);\n  }\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(1)\` average case lookup.\n- **Space Complexity**: \`O(n)\` total allocated bucket slots.`
+    `🎯 **Understanding Hash Tables & Collisions**\n\nThink of a Hash Table like a premium coat check at a luxury hotel. When you hand the attendant your coat (the Value), they perform a quick calculation on your name (the Key) and assign your coat to a specific numbered hanger (the Index).\n\nWhen you return, they don't search through 500 coats; they instantly jump to your exact hanger (\`O(1)\` speed!). If two people happen to map to the same hanger number, the attendant simply hangs the second coat right behind the first (this is called 'Chaining' to resolve a collision).`
+  ],
+  recursion: [
+    `🎯 **Understanding Recursion**\n\nThink of Recursion like standing in a long line and wanting to know what position you are in. Instead of counting everyone yourself, you tap the person in front of you and ask: "What position are you in?"\n\nThey tap the person in front of them, all the way until the very first person in line says "I am #1!" (This is the Base Case!). Then that number gets passed back down the line, adding 1 each time until you know your exact spot.`
   ],
   general: [
-    `🧠 **AI Expert DSA Solver & Code Assistant**\n\nI have analyzed your algorithmic query! Here is the optimal engineering approach to solve this challenge:\n\n### 1️⃣ Strategy & Data Structure Choice\nWe can achieve optimal performance by utilizing an associative Hash Map (or Two-Pointer technique) to eliminate redundant nested loops.\n\n### 2️⃣ Algorithm Step-by-Step\n1. Initialize data pointers or a lookup hash table in \`O(1)\` auxiliary space.\n2. Iterate through the sequence precisely once (\`O(n)\` linear pass).\n3. Check for complementary targets or boundary invariants instantly.\n\n### 3️⃣ Asymptotic Guarantee\n- **Time Complexity**: \`O(n)\` linear time (vastly superior to brute-force \`O(n²)\`).\n- **Space Complexity**: \`O(n)\` for lookup table storage or \`O(1)\` for in-place pointers.`
+    `🧠 **AI Concept Tutor & Study Companion**\n\nThat is a fantastic question! Whenever you encounter a difficult computer science topic, the best way to master it is to break it down into real-world analogies.\n\nData structures are simply different ways of organizing physical items in a room (like stacking plates in a kitchen or hanging coats in a closet). If you tell me exactly which topic on the roadmap is confusing you, I will walk you through the intuition step-by-step!`
   ]
 };
 
@@ -227,6 +230,8 @@ const getResponseCategory = (prompt: string): string => {
     return 'tree';
   if (lower.includes('hash') || lower.includes('map') || lower.includes('dict') || lower.includes('key') || lower.includes('collision'))
     return 'hash';
+  if (lower.includes('recur') || lower.includes('fib') || lower.includes('call') || lower.includes('stack'))
+    return 'recursion';
   return 'general';
 };
 
@@ -236,7 +241,7 @@ export const AITutorService = {
     await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
 
     const category = getResponseCategory(prompt);
-    const responses = TUTOR_SOLUTIONS[category];
+    const responses = CONCEPT_EXPLANATIONS[category];
     return responses[Math.floor(Math.random() * responses.length)];
   },
 };

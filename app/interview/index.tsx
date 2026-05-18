@@ -18,7 +18,7 @@ export default function AssistantScreen() {
     {
       id: '1',
       role: 'assistant',
-      text: "👋 Welcome! I am your AI Expert Code Solver & DSA Tutor. You can ask me any algorithm question, paste a code problem, or ask for a step-by-step solution and asymptotic complexity breakdown!"
+      text: "👋 Welcome! I am your AI Study Companion & Concept Tutor. Whenever you feel stuck or don't fully understand a topic on the roadmap—like Recursion, Trees, or Time Complexity—just ask me! I am here to break down difficult concepts using simple, real-world analogies."
     }
   ]);
   const [input, setInput] = useState('');
@@ -40,7 +40,7 @@ export default function AssistantScreen() {
 
     try {
       const response = await AITutorService.getExplanation(
-        `Acting as an expert computer science professor and code solver, analyze this question or code snippet and provide a clear, step-by-step solution and asymptotic complexity breakdown: "${input}"`
+        `Acting as an encouraging AI study companion and pedagogical concept tutor, explain this data structure or algorithm question using intuitive real-world analogies: "${input}"`
       );
       
       const aiMessage: Message = {
@@ -62,7 +62,7 @@ export default function AssistantScreen() {
     <SafeAreaView style={styles.container}>
       <Stack.Screen 
         options={{ 
-          title: 'AI Code Assistant',
+          title: 'AI Concept Tutor',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
                 <ChevronLeft color={Theme.colors.text} size={28} />
@@ -79,16 +79,16 @@ export default function AssistantScreen() {
               <Bot color={Theme.colors.primary} size={32} />
           </View>
           <View>
-              <Text style={styles.interviewerName}>AI Expert Code Solver</Text>
+              <Text style={styles.interviewerName}>AI Study Companion</Text>
               <View style={styles.statusRow}>
                   <View style={styles.statusDot} />
-                  <Text style={styles.statusText}>Ready to Solve</Text>
+                  <Text style={styles.statusText}>Ready to Explain</Text>
               </View>
           </View>
           <View style={styles.spacer} />
           <View style={styles.difficultyBadge}>
               <ShieldCheck size={14} color={Theme.colors.warning} />
-              <Text style={styles.difficultyText}>Expert</Text>
+              <Text style={styles.difficultyText}>Friendly</Text>
           </View>
       </View>
 
@@ -136,7 +136,7 @@ export default function AssistantScreen() {
           {isTyping && (
               <View style={styles.typingIndicator}>
                   <ActivityIndicator size="small" color={Theme.colors.primary} />
-                  <Text style={styles.typingText}>Analyzing and solving problem...</Text>
+                  <Text style={styles.typingText}>Formulating real-world analogy...</Text>
               </View>
           )}
         </ScrollView>
@@ -154,7 +154,7 @@ export default function AssistantScreen() {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Ask any question or paste code..."
+            placeholder="Ask about any concept or topic..."
             placeholderTextColor={Theme.colors.textMuted}
             value={input}
             onChangeText={setInput}
