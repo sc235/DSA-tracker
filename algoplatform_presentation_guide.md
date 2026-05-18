@@ -22,9 +22,9 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
 - **Mathematical Frame Generator**: Powered by custom JavaScript Generator functions (`function*`) that yield exact memory states at each algorithmic iteration.
 - **Time-Travel Debugging**: Students can scrub back and forth through time, pausing or stepping backward during a Quick Sort partition or Dijkstra graph traversal to inspect pointer mutations.
 
-### Slide 3: The AI Technical Interview Simulator (`/interview`)
-- **FAANG Mock Interviews**: An interactive AI technical lead greets candidates with realistic system design and conceptual questions (e.g., *"Explain the time complexity trade-offs between Hash Maps and TreeMaps"*).
-- **Adaptive Follow-Ups**: The AI evaluates candidate responses for asymptotic correctness and immediately pushes their understanding further with adaptive follow-up rounds.
+### Slide 3: The AI Code Assistant & Expert DSA Solver (`/interview`)
+- **Interactive Code Solver**: Students can ask any algorithm question, paste a code problem, or request assistance on difficult concepts.
+- **Asymptotic Breakdown**: The AI provides a structured, optimal solution in TypeScript/JavaScript along with precise Big-O time and space complexity evaluations.
 
 ### Slide 4: Real-Time Multiplayer Coding Arena (`/battle` & `/duel`)
 - **Sub-Millisecond WebSockets**: Powered by Socket.IO for real-time 1v1 competitive coding duels.
@@ -71,9 +71,9 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
 > *(Click on 'Sorting Algorithms' -> 'Quick Sort')*
 > *"Instead of running code instantly as a black box, our custom Simulation Engine breaks down Quick Sort into step-by-step frames. I can step forward, pause, or step backward to observe exactly how the pivot element partitions the array."*
 
-### Step 3: AI Interview Simulator
+### Step 3: AI Code Assistant & Expert Solver
 > *(Click on the Robot icon in the top right header)*
-> *"Here in the AI Interview Room, our platform acts as a Google Senior Lead. It asks me real-world conceptual questions. When I submit my explanation, the AI evaluates my asymptotic logic and asks realistic follow-ups to test my depth of mastery."*
+> *"Here in the AI Code Assistant Room, our platform acts as an expert computer science professor and problem solver. When a student enters a question or pastes code like Binary Search or Quick Sort, the AI immediately outputs an optimal step-by-step solution along with a rigorous asymptotic complexity breakdown."*
 
 ### Step 4: Battle Arena
 > *(Click on the Swords icon in the header)*

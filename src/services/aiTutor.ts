@@ -196,42 +196,37 @@ export const getAIExplanation = (
   };
 };
 
-// ── AI Interview Tutor Service ─────────────────────────────────────────
-// Used by the Interview screen for interactive mock interview responses.
+// ── AI Code Solver & Assistant Service ──────────────────────────────────
+// Used by the Assistant screen to explain and solve student algorithm queries.
 
-const INTERVIEW_RESPONSES: Record<string, string[]> = {
-  complexity: [
-    "Good analysis! You're on the right track with the complexity reasoning. Can you now explain what happens to the space complexity when we use recursion versus iteration?",
-    "Interesting perspective on time complexity. Let's go deeper — how would this algorithm's performance change if the input were already sorted?",
-    "You've identified the key trade-off. Now, can you compare this with a divide-and-conquer approach? What would change?",
+const TUTOR_SOLUTIONS: Record<string, string[]> = {
+  search: [
+    `🎯 **Problem Analysis & Solution: Binary Search**\n\nTo locate an element efficiently in a monotonically sorted dataset, we utilize Binary Search rather than linear scanning.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction binarySearch(arr: number[], target: number): number {\n  let left = 0, right = arr.length - 1;\n  while (left <= right) {\n    let mid = Math.floor((left + right) / 2);\n    if (arr[mid] === target) return mid;\n    if (arr[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return -1;\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(log n)\` because we eliminate half the search space on each probe.\n- **Space Complexity**: \`O(1)\` constant auxiliary memory using iterative pointers.`
   ],
-  dataStructure: [
-    "That's a solid understanding of the data structure. Can you explain a real-world scenario where you'd choose this over an alternative?",
-    "Good explanation! Now, what would be the impact on performance if we needed to support concurrent access to this structure?",
-    "Nice! Let's take it further — how would you modify this structure to support range queries efficiently?",
+  sort: [
+    `🎯 **Problem Analysis & Solution: Efficient Sorting (Quick Sort)**\n\nFor general-purpose in-place sorting, Quick Sort provides superior CPU cache locality compared to Merge Sort.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction quickSort(arr: number[]): number[] {\n  if (arr.length <= 1) return arr;\n  const pivot = arr[Math.floor(arr.length / 2)];\n  const left = arr.filter(x => x < pivot);\n  const middle = arr.filter(x => x === pivot);\n  const right = arr.filter(x => x > pivot);\n  return [...quickSort(left), ...middle, ...quickSort(right)];\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(n log n)\` expected partition depth.\n- **Space Complexity**: \`O(log n)\` call stack depth.`
   ],
-  algorithm: [
-    "Well explained! Now, what edge cases would you consider when implementing this in production code?",
-    "That's correct. Can you walk me through how you'd optimize this for very large datasets that don't fit in memory?",
-    "Great answer. Let's discuss trade-offs — when would you NOT use this approach?",
+  tree: [
+    `🎯 **Problem Analysis & Solution: Tree & Graph Traversal**\n\nTo traverse a hierarchical tree or graph level-by-level, we use Breadth-First Search (BFS) with a First-In-First-Out (FIFO) queue.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nfunction bfs(root: TreeNode | null): number[] {\n  if (!root) return [];\n  const queue: TreeNode[] = [root];\n  const result: number[] = [];\n  while (queue.length > 0) {\n    const curr = queue.shift()!;\n    result.push(curr.val);\n    if (curr.left) queue.push(curr.left);\n    if (curr.right) queue.push(curr.right);\n  }\n  return result;\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(V + E)\` visiting every vertex precisely once.\n- **Space Complexity**: \`O(w)\` where \`w\` is the maximum width horizon of the tree.`
+  ],
+  hash: [
+    `🎯 **Problem Analysis & Solution: Hash Table & Collision Resolution**\n\nTo achieve constant-time associative lookups, we utilize Hash Tables with Chaining or Open Addressing to resolve index collisions.\n\n### 💻 Optimal Implementation (TypeScript):\n\`\`\`typescript\nclass HashTable {\n  private table = new Array(128).fill(null).map(() => [] as [string, any][]);\n  private hash(key: string): number {\n    return key.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 128;\n  }\n  set(key: string, value: any) {\n    const bucket = this.table[this.hash(key)];\n    const item = bucket.find(x => x[0] === key);\n    if (item) item[1] = value;\n    else bucket.push([key, value]);\n  }\n}\n\`\`\`\n\n### ⏱️ Asymptotic Guarantee:\n- **Time Complexity**: \`O(1)\` average case lookup.\n- **Space Complexity**: \`O(n)\` total allocated bucket slots.`
   ],
   general: [
-    "Interesting answer. Let me challenge you: what's the worst-case scenario for this approach, and how would you mitigate it?",
-    "I see your reasoning. Can you think of a situation where a simpler, brute-force approach might actually be preferable?",
-    "Good thinking! As a follow-up: how would you test this implementation to ensure correctness? What test cases would you write?",
-    "That's a thoughtful response. Now, how would you explain this concept to a junior developer who's never seen it before?",
-    "Solid understanding. Let's pivot — can you describe how this concept applies in system design, beyond just algorithms?",
-  ],
+    `🧠 **AI Expert DSA Solver & Code Assistant**\n\nI have analyzed your algorithmic query! Here is the optimal engineering approach to solve this challenge:\n\n### 1️⃣ Strategy & Data Structure Choice\nWe can achieve optimal performance by utilizing an associative Hash Map (or Two-Pointer technique) to eliminate redundant nested loops.\n\n### 2️⃣ Algorithm Step-by-Step\n1. Initialize data pointers or a lookup hash table in \`O(1)\` auxiliary space.\n2. Iterate through the sequence precisely once (\`O(n)\` linear pass).\n3. Check for complementary targets or boundary invariants instantly.\n\n### 3️⃣ Asymptotic Guarantee\n- **Time Complexity**: \`O(n)\` linear time (vastly superior to brute-force \`O(n²)\`).\n- **Space Complexity**: \`O(n)\` for lookup table storage or \`O(1)\` for in-place pointers.`
+  ]
 };
 
 const getResponseCategory = (prompt: string): string => {
   const lower = prompt.toLowerCase();
-  if (lower.includes('complexity') || lower.includes('big o') || lower.includes('time') || lower.includes('space'))
-    return 'complexity';
-  if (lower.includes('tree') || lower.includes('list') || lower.includes('hash') || lower.includes('stack') || lower.includes('queue') || lower.includes('graph'))
-    return 'dataStructure';
-  if (lower.includes('sort') || lower.includes('search') || lower.includes('traverse') || lower.includes('algorithm'))
-    return 'algorithm';
+  if (lower.includes('search') || lower.includes('find') || lower.includes('binary') || lower.includes('target') || lower.includes('look'))
+    return 'search';
+  if (lower.includes('sort') || lower.includes('order') || lower.includes('array') || lower.includes('quick') || lower.includes('merge'))
+    return 'sort';
+  if (lower.includes('tree') || lower.includes('graph') || lower.includes('bfs') || lower.includes('dfs') || lower.includes('node'))
+    return 'tree';
+  if (lower.includes('hash') || lower.includes('map') || lower.includes('dict') || lower.includes('key') || lower.includes('collision'))
+    return 'hash';
   return 'general';
 };
 
@@ -241,7 +236,7 @@ export const AITutorService = {
     await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
 
     const category = getResponseCategory(prompt);
-    const responses = INTERVIEW_RESPONSES[category];
+    const responses = TUTOR_SOLUTIONS[category];
     return responses[Math.floor(Math.random() * responses.length)];
   },
 };

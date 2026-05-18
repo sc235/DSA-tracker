@@ -8,17 +8,17 @@ import { VoiceService } from '../../src/services/voiceService';
 
 interface Message {
   id: string;
-  role: 'interviewer' | 'candidate';
+  role: 'assistant' | 'student';
   text: string;
 }
 
-export default function InterviewScreen() {
+export default function AssistantScreen() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      role: 'interviewer',
-      text: "Hello! I'm your AI Interviewer. Today we'll be discussing Data Structures and Algorithms. To start, could you explain the difference between a Hash Map and a Treemap in terms of time complexity and ordering?"
+      role: 'assistant',
+      text: "👋 Welcome! I am your AI Expert Code Solver & DSA Tutor. You can ask me any algorithm question, paste a code problem, or ask for a step-by-step solution and asymptotic complexity breakdown!"
     }
   ]);
   const [input, setInput] = useState('');
@@ -30,7 +30,7 @@ export default function InterviewScreen() {
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      role: 'candidate',
+      role: 'student',
       text: input
     };
 
@@ -39,21 +39,19 @@ export default function InterviewScreen() {
     setIsTyping(true);
 
     try {
-      // Simulate AI thinking and response
-      // In a real app, we'd send the conversation history to Gemini
       const response = await AITutorService.getExplanation(
-        `Acting as a technical interviewer, evaluate this answer and ask a follow-up: "${input}"`
+        `Acting as an expert computer science professor and code solver, analyze this question or code snippet and provide a clear, step-by-step solution and asymptotic complexity breakdown: "${input}"`
       );
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'interviewer',
+        role: 'assistant',
         text: response
       };
       
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Interview AI error:', error);
+      console.error('Assistant AI error:', error);
     } finally {
       setIsTyping(false);
       scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -64,7 +62,7 @@ export default function InterviewScreen() {
     <SafeAreaView style={styles.container}>
       <Stack.Screen 
         options={{ 
-          title: 'Technical Interview',
+          title: 'AI Code Assistant',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
                 <ChevronLeft color={Theme.colors.text} size={28} />
@@ -81,16 +79,16 @@ export default function InterviewScreen() {
               <Bot color={Theme.colors.primary} size={32} />
           </View>
           <View>
-              <Text style={styles.interviewerName}>Senior Engineer AI</Text>
+              <Text style={styles.interviewerName}>AI Expert Code Solver</Text>
               <View style={styles.statusRow}>
                   <View style={styles.statusDot} />
-                  <Text style={styles.statusText}>Conducting Interview</Text>
+                  <Text style={styles.statusText}>Ready to Solve</Text>
               </View>
           </View>
           <View style={styles.spacer} />
           <View style={styles.difficultyBadge}>
               <ShieldCheck size={14} color={Theme.colors.warning} />
-              <Text style={styles.difficultyText}>Hard</Text>
+              <Text style={styles.difficultyText}>Expert</Text>
           </View>
       </View>
 
@@ -109,26 +107,26 @@ export default function InterviewScreen() {
               key={msg.id} 
               style={[
                 styles.messageWrapper, 
-                msg.role === 'candidate' ? styles.userWrapper : styles.aiWrapper
+                msg.role === 'student' ? styles.userWrapper : styles.aiWrapper
               ]}
             >
-              {msg.role === 'interviewer' && (
+              {msg.role === 'assistant' && (
                   <View style={styles.smallAvatar}>
                       <Bot color={Theme.colors.primary} size={16} />
                   </View>
               )}
               <View style={[
                 styles.messageBubble, 
-                msg.role === 'candidate' ? styles.userBubble : styles.aiBubble
+                msg.role === 'student' ? styles.userBubble : styles.aiBubble
               ]}>
                 <Text style={[
                   styles.messageText,
-                  msg.role === 'candidate' ? styles.userText : styles.aiText
+                  msg.role === 'student' ? styles.userText : styles.aiText
                 ]}>
                   {msg.text}
                 </Text>
               </View>
-              {msg.role === 'candidate' && (
+              {msg.role === 'student' && (
                   <View style={[styles.smallAvatar, { backgroundColor: Theme.colors.surfaceLight }]}>
                       <User color={Theme.colors.text} size={16} />
                   </View>
@@ -138,26 +136,25 @@ export default function InterviewScreen() {
           {isTyping && (
               <View style={styles.typingIndicator}>
                   <ActivityIndicator size="small" color={Theme.colors.primary} />
-                  <Text style={styles.typingText}>Interviewer is analyzing...</Text>
+                  <Text style={styles.typingText}>Analyzing and solving problem...</Text>
               </View>
           )}
         </ScrollView>
 
         <View style={styles.inputArea}>
           <TouchableOpacity style={styles.micButton} onPress={() => {
-              // Speak the last interviewer message aloud
-              const lastAiMsg = [...messages].reverse().find(m => m.role === 'interviewer');
+              const lastAiMsg = [...messages].reverse().find(m => m.role === 'assistant');
               if (lastAiMsg) {
                 VoiceService.speak(lastAiMsg.text);
               } else {
-                Alert.alert('Voice', 'No interviewer message to read aloud yet.');
+                Alert.alert('Voice', 'No assistant message to read aloud yet.');
               }
           }}>
               <Mic color={Theme.colors.textMuted} size={24} />
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Explain your logic..."
+            placeholder="Ask any question or paste code..."
             placeholderTextColor={Theme.colors.textMuted}
             value={input}
             onChangeText={setInput}
