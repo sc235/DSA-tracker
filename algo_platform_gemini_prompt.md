@@ -23,8 +23,8 @@ AlgoPlatform is a next-generation gamified mobile & web application designed to 
 1. **Interactive Learning Roadmap**: A progressive 10-milestone node tree (from Arrays & Hash Tables up to Graphs & Dynamic Programming). Brand new accounts start with advanced topics locked; students must master prerequisite topics to progress.
 2. **Step-by-Step Simulation Engine**: Decouples algorithm execution using JavaScript Generator Functions (function*). Each step yields an immutable frame representing memory state, pointer positions (left, right, mid), and dynamic variable highlights. Students can time-travel (step forward, pause, step backward) to inspect execution invariants.
 3. **AI Concept Tutor & Study Companion**: A welcoming AI assistant named "AI Study Companion". When a student struggles with abstract concepts like Recursion or Hash Table collisions, the AI breaks them down using relatable real-world analogies (e.g., searching a dictionary or organizing a hotel coat check). The AI matching engine features a multi-layered keyword classifier covering all 10 roadmap milestones.
-4. **Real-Time Multiplayer Battle Arena**: Connects players via low-latency WebSockets (Socket.IO) in private 1v1 duel rooms. When Player A progresses in their algorithm, their visual progress bar instantly synchronizes across Player B's screen in real time.
-5. **Gamified Researcher Profile & Master Diploma**: Accrues XP points from quizzes and duels to calculate researcher ranks (from Novice Coder up to Principal Scientist). Once all 10 roadmap topics are mastered, a verified golden Master Certification diploma dynamically unlocks on the profile.
+4. **Side-by-Side Algorithm Battle Arena**: Students can select two contending algorithms (e.g., Quick Sort vs. Merge Sort) and pit them against each other in a side-by-side visual race on customizable dataset sizes. They can observe real-time differences in step counts, memory accesses, and comparative execution speeds.
+5. **Gamified Researcher Profile & Master Diploma**: Accrues XP points from quizzes and algorithm battles to calculate researcher ranks (from Novice Coder up to Principal Scientist). Once all 10 roadmap topics are mastered, a verified golden Master Certification diploma dynamically unlocks on the profile.
 
 =========================================
 🛠️ TECHNICAL ARCHITECTURE & STACK:
@@ -32,5 +32,5 @@ AlgoPlatform is a next-generation gamified mobile & web application designed to 
 - **Frontend**: React Native & Expo Router (100% TypeScript) featuring glassmorphism UI styling, dark mode tokens, and SVG canvas rendering.
 - **State Management**: Zustand global stores (useAuthStore, useProgressStore) for high-performance reactive state updates.
 - **Backend & Database**: Supabase (PostgreSQL DB & secure JWT Authentication). Configured for frictionless instant logins.
-- **Real-Time Communication**: Node.js & Socket.IO WebSockets handling room allocation (room_X) and step-by-step multiplayer sync.
+- **Simulation Benchmarking**: Dual generator engines processing synchronous array manipulations for comparative step-by-step visualizations.
 ```

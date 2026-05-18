@@ -26,12 +26,12 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
 - **Friendly Concept Explainer**: When a student is confused by a topic on the roadmap (e.g., Recursion, Trees, or Time Complexity), they can ask the AI Study Companion for intuitive, real-world explanations.
 - **Pedagogical Analogies**: Instead of raw code solutions, the AI breaks down abstract data structure invariants using relatable analogies like searching a dictionary or organizing a coat check.
 
-### Slide 4: Real-Time Multiplayer Coding Arena (`/battle` & `/duel`)
-- **Sub-Millisecond WebSockets**: Powered by Socket.IO for real-time 1v1 competitive coding duels.
-- **Synchronized Visual Battles**: When Player A submits a step in their algorithm, their progress bar and visualizer pointers instantly sync on Player B's screen, creating an electrifying esports-like environment.
+### Slide 4: Side-by-Side Algorithm Battle Arena (`/battle`)
+- **Comparative Benchmarking**: Students can pick two contending sorting algorithms (e.g., Quick Sort vs. Bubble Sort) and pit them against each other in a side-by-side visual race.
+- **Customizable Datasets**: By adjusting dataset sizes in real time, students observe the dramatic scalability differences between `O(n log n)` and `O(n²)` algorithms through synchronized frame animations.
 
 ### Slide 5: Researcher Profile & Master Certification (`/profile`)
-- **Gamified XP Level Bar**: Tracks accrued XP from quizzes and duels, ranking students across titles from *Novice Coder* to *Principal Scientist*.
+- **Gamified XP Level Bar**: Tracks accrued XP from quizzes and algorithm battles, ranking students across titles from *Novice Coder* to *Principal Scientist*.
 - **Verified Master Diploma**: Once a student completes all 10 roadmap milestones (`10/10`), an official golden credential diploma unlocks, ready to be verified and exported to LinkedIn.
 
 ---
@@ -45,7 +45,7 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
                |                                       |
 [ Authentication: Supabase JWT ] <---> [ Database: Supabase PostgreSQL DB ]
                |                                       |
-[ Real-Time: Socket.IO Server ] <----> [ 1v1 Matchmaking & Duel Rooms ]
+[ Benchmarking: Dual Generators] <----> [ Side-by-Side Array Animations ]
 ```
 
 ### Frontend Framework
@@ -57,8 +57,8 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
 - **Decentralized Authentication**: Secure user registration and session tokens managed via Supabase Auth (`auth.users`).
 - **PostgreSQL Persistence**: User metadata, accrued XP, quiz accuracies, and completed roadmap milestones stored securely in Supabase tables.
 
-### Real-Time Multiplayer Engine (Socket.IO)
-- Dedicated Node.js WebSocket server managing dynamic matchmaking queues, private duel room allocation (`room_X`), and instant bidirectional state synchronization.
+### Dual Generator Benchmarking Engine
+- Decouples execution logic into parallel generator streams (`function*`), synchronizing visual ticks so two competing algorithms can execute simultaneously without UI thread blocking.
 
 ---
 
@@ -75,9 +75,9 @@ Traditional Data Structures & Algorithms (DSA) learning is fundamentally broken.
 > *(Click on the Robot icon in the top right header)*
 > *"Here in the AI Concept Tutor Room, our platform acts as a friendly study companion. When a student feels stuck or doesn't fully understand a topic on the roadmap like Recursion or Hash Tables, they can ask any question. The AI instantly breaks down the concept using simple, intuitive real-world analogies like searching a dictionary or organizing a hotel coat check."*
 
-### Step 4: Battle Arena
+### Step 4: Algorithm Battle Arena
 > *(Click on the Swords icon in the header)*
-> *"For competitive coders, our Battle Arena connects players via low-latency WebSockets. You can challenge peers in real-time 1v1 algorithm duels where your progress bars sync instantly across both screens."*
+> *"To explore algorithmic performance, our Battle Arena lets us pit two algorithms against each other. Let's pick Quick Sort versus Bubble Sort on a dataset of 15 elements and click 'Engage Battle'. You can watch them race side-by-side in real time, visually demonstrating exactly why Quick Sort is exponentially faster on larger datasets."*
 
 ### Step 5: Profile & Diploma Verification
 > *(Click on the User icon in the header)*
