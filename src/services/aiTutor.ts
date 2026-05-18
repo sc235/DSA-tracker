@@ -200,38 +200,66 @@ export const getAIExplanation = (
 // Used by the Tutor screen to explain difficult DSA concepts with simple analogies.
 
 const CONCEPT_EXPLANATIONS: Record<string, string[]> = {
-  search: [
-    `🎯 **Understanding Binary Search**\n\nWhen you search for a word in a 1,000-page dictionary, you don't read page 1, then page 2, all the way to page 500. You flip open the middle! If the word you want comes earlier alphabetically, you ignore the entire right half of the book.\n\nBinary Search does exactly this in computer memory. By continually cutting the remaining search space in half, it finds any item in logarithmic time (\`O(log n)\`). It turns 1,000,000 checks into just 20 checks!`
+  arrays: [
+    `🎯 **Understanding Arrays & Two-Pointers**\n\nThink of an Array like a row of numbered mailboxes. You can instantly jump to mailbox #5 in \`O(1)\` time because each box is right next to the other in contiguous memory.\n\n**The Two-Pointer Technique**: Imagine searching for two numbers that sum to 10 in a sorted row. Instead of checking every possible combination (which takes \`O(n²)\`), you put one finger on the first mailbox (Left) and one on the last (Right). If the sum is too small, you move Left rightward; if too big, you move Right leftward. You find the answer in just one quick pass (\`O(n)\`)!`
   ],
-  sort: [
-    `🎯 **Understanding Quick Sort & Merge Sort**\n\nSorting is like organizing a chaotic library of books by author name.\n\n- **Merge Sort** uses 'Divide & Conquer': You split the giant pile of books in half, hand them to two assistants to sort, and then zip the two organized piles together.\n- **Quick Sort** chooses one random book (the 'pivot'). Every book earlier in the alphabet is placed to its left, and every book later is placed to its right. Repeating this partitions the library at lightning speed!`
-  ],
-  tree: [
-    `🎯 **Understanding Trees & Graphs**\n\nImagine your family tree or a company organizational chart. You have one CEO (the Root Node) at the top, who manages Vice Presidents (Child Nodes), who manage Team Leads (Sub-trees).\n\nWhen we want to search through this structure:\n- **Breadth-First Search (BFS)** checks everyone level-by-level (all VPs first, then all Team Leads).\n- **Depth-First Search (DFS)** follows one specific management chain all the way down to the newest intern before checking another branch.`
-  ],
-  hash: [
+  hashTables: [
     `🎯 **Understanding Hash Tables & Collisions**\n\nThink of a Hash Table like a premium coat check at a luxury hotel. When you hand the attendant your coat (the Value), they perform a quick calculation on your name (the Key) and assign your coat to a specific numbered hanger (the Index).\n\nWhen you return, they don't search through 500 coats; they instantly jump to your exact hanger (\`O(1)\` speed!). If two people happen to map to the same hanger number, the attendant simply hangs the second coat right behind the first (this is called 'Chaining' to resolve a collision).`
+  ],
+  linkedLists: [
+    `🎯 **Understanding Linked Lists**\n\nUnlike an Array (where all mailboxes are glued together in a single row), a Linked List is like a scavenger hunt! Each clue (a Node) contains two things: a secret message (Data) and the GPS address of the next clue (Next Pointer).\n\nBecause the clues are scattered everywhere, you cannot jump straight to clue #10. You must start at the first clue (Head) and follow the pointers one by one (\`O(n)\`). However, adding a brand new clue in the middle is incredibly fast (\`O(1)\`)—you just erase one GPS address and rewrite it without moving any physical boxes!`
+  ],
+  stacksQueues: [
+    `🎯 **Understanding Stacks & Queues**\n\nThese two fundamental data structures are all about ordering rules:\n\n🥞 **Stack (LIFO - Last-In, First-Out)**: Exactly like stacking heavy dinner plates on a kitchen counter. You can only add a new plate to the top, and when you need a plate, you must take off the top one first. (Used in browser back buttons and recursion call stacks).\n\n🎟️ **Queue (FIFO - First-In, First-Out)**: Exactly like standing in line at a movie theater ticket booth. The first person to arrive in line is the first one to get their ticket and enter. (Used in task scheduling and network packet buffers).`
   ],
   recursion: [
     `🎯 **Understanding Recursion**\n\nThink of Recursion like standing in a long line and wanting to know what position you are in. Instead of counting everyone yourself, you tap the person in front of you and ask: "What position are you in?"\n\nThey tap the person in front of them, all the way until the very first person in line says "I am #1!" (This is the Base Case!). Then that number gets passed back down the line, adding 1 each time until you know your exact spot.`
   ],
+  searching: [
+    `🎯 **Understanding Binary Search**\n\nWhen you search for a word in a 1,000-page dictionary, you don't read page 1, then page 2, all the way to page 500. You flip open the middle! If the word you want comes earlier alphabetically, you ignore the entire right half of the book.\n\nBinary Search does exactly this in computer memory. By continually cutting the remaining search space in half, it finds any item in logarithmic time (\`O(log n)\`). It turns 1,000,000 checks into just 20 checks!`
+  ],
+  sorting: [
+    `🎯 **Understanding Quick Sort & Merge Sort**\n\nSorting is like organizing a chaotic library of books by author name.\n\n- **Merge Sort** uses 'Divide & Conquer': You split the giant pile of books in half, hand them to two assistants to sort, and then zip the two organized piles together.\n- **Quick Sort** chooses one random book (the 'pivot'). Every book earlier in the alphabet is placed to its left, and every book later is placed to its right. Repeating this partitions the library at lightning speed!`
+  ],
+  trees: [
+    `🎯 **Understanding Trees & Binary Search Trees (BST)**\n\nImagine a family tree or a corporate hierarchy. You have one CEO (Root Node) at the top, who manages Vice Presidents (Child Nodes), who manage Team Leads.\n\nIn a **Binary Search Tree (BST)**, there is a strict organizational rule: all numbers smaller than the manager go to their Left branch, and all numbers greater go to their Right branch. When searching for a number, every single step down the tree cuts your remaining choices in half (\`O(log n)\`)!`
+  ],
+  graphs: [
+    `🎯 **Understanding Graphs & BFS/DFS**\n\nThink of a Graph exactly like a social network (Instagram/LinkedIn) or a GPS map of cities connected by highways.\n\n- **Breadth-First Search (BFS)** is like throwing a pebble into a still pond: the ripples expand outward in perfect concentric circles. It checks all your immediate friends first, then your friends' friends. (Guarantees finding the shortest unweighted path!).\n- **Depth-First Search (DFS)** is like exploring a vast labyrinth: you keep one hand on the right wall and follow one single corridor all the way to a dead end before backtracking to explore remaining paths.`
+  ],
+  dynamicProgramming: [
+    `🎯 **Understanding Dynamic Programming (DP)**\n\nThink of Dynamic Programming like writing down answers on a whiteboard so you never have to calculate the same difficult equation twice!\n\nImagine I ask you: "What is 1 + 1 + 1 + 1 + 1?" You count and say "5".\nIf I instantly add another "+ 1" to the end, you don't re-count all six ones from scratch! You simply remember the previous answer (5) and add 1 to get 6. Storing past results to instantly solve future overlapping subproblems is called **Memoization** (\`O(n)\` speed).`
+  ],
+  complexity: [
+    `🎯 **Understanding Big-O & Time/Space Complexity**\n\nBig-O notation is how computer scientists measure how well an algorithm scales when the input becomes massive (like 1 billion users):\n\n- ⚡ **O(1) Constant**: Like switching on a lightbulb. Whether the room is 10 square feet or 10,000 square feet, flipping the switch takes the exact same instant.\n- 🚶 **O(n) Linear**: Like reading a book page-by-page. Double the pages, double the time.\n- 🔍 **O(log n) Logarithmic**: Like searching a dictionary by halving the pages. Extremely scalable!\n- 🐢 **O(n²) Quadratic**: Like shaking hands with everyone in a room of N people, where everyone shakes hands with everyone else. Explodes in time as N grows!`
+  ],
   general: [
-    `🧠 **AI Concept Tutor & Study Companion**\n\nThat is a fantastic question! Whenever you encounter a difficult computer science topic, the best way to master it is to break it down into real-world analogies.\n\nData structures are simply different ways of organizing physical items in a room (like stacking plates in a kitchen or hanging coats in a closet). If you tell me exactly which topic on the roadmap is confusing you, I will walk you through the intuition step-by-step!`
+    `🧠 **AI Concept Tutor & Study Companion**\n\nThat is a fantastic question! Whenever you encounter a difficult computer science topic, the best way to master it is to break it down into real-world analogies.\n\nData structures are simply different ways of organizing physical items in a room (like stacking plates in a kitchen or hanging coats in a closet). If you tell me exactly which topic on the roadmap is confusing you (e.g., Arrays, Hash Tables, Linked Lists, Stacks, Recursion, Searching, Sorting, Trees, Graphs, DP, or Big-O), I will walk you through the intuition step-by-step!`
   ]
 };
 
 const getResponseCategory = (prompt: string): string => {
   const lower = prompt.toLowerCase();
-  if (lower.includes('search') || lower.includes('find') || lower.includes('binary') || lower.includes('target') || lower.includes('look'))
-    return 'search';
-  if (lower.includes('sort') || lower.includes('order') || lower.includes('array') || lower.includes('quick') || lower.includes('merge'))
-    return 'sort';
-  if (lower.includes('tree') || lower.includes('graph') || lower.includes('bfs') || lower.includes('dfs') || lower.includes('node'))
-    return 'tree';
-  if (lower.includes('hash') || lower.includes('map') || lower.includes('dict') || lower.includes('key') || lower.includes('collision'))
-    return 'hash';
-  if (lower.includes('recur') || lower.includes('fib') || lower.includes('call') || lower.includes('stack'))
-    return 'recursion';
+  
+  // 1. Two-word or very specific keywords first
+  if (lower.includes('binary search tree') || lower.includes('bst') || lower.includes('avl')) return 'trees';
+  if (lower.includes('binary search') || lower.includes('linear search') || lower.includes('jump search')) return 'searching';
+  if (lower.includes('dynamic programming') || lower.includes('dp') || lower.includes('memoiz') || lower.includes('tabulat') || lower.includes('subproblem') || lower.includes('fibonacci')) return 'dynamicProgramming';
+  if (lower.includes('big o') || lower.includes('time complexity') || lower.includes('space complexity') || lower.includes('asymptotic') || lower.includes('o(1)') || lower.includes('o(n)')) return 'complexity';
+  if (lower.includes('linked list') || lower.includes('singly') || lower.includes('doubly') || lower.includes('node pointer') || lower.includes('floyd') || lower.includes('cycle')) return 'linkedLists';
+  if (lower.includes('two pointer') || lower.includes('two-pointer') || lower.includes('pointers')) return 'arrays';
+  if (lower.includes('hash') || lower.includes('map') || lower.includes('dict') || lower.includes('collision') || lower.includes('chaining') || lower.includes('bucket')) return 'hashTables';
+  
+  // 2. Single-word broad topics
+  if (lower.includes('array') || lower.includes('vector') || lower.includes('slice') || lower.includes('index')) return 'arrays';
+  if (lower.includes('stack') || lower.includes('queue') || lower.includes('lifo') || lower.includes('fifo') || lower.includes('push') || lower.includes('pop') || lower.includes('enqueue') || lower.includes('dequeue')) return 'stacksQueues';
+  if (lower.includes('recur') || lower.includes('factorial') || lower.includes('base case') || lower.includes('call stack')) return 'recursion';
+  if (lower.includes('search') || lower.includes('find') || lower.includes('target')) return 'searching';
+  if (lower.includes('sort') || lower.includes('order') || lower.includes('quick') || lower.includes('merge') || lower.includes('bubble') || lower.includes('selection') || lower.includes('insertion')) return 'sorting';
+  if (lower.includes('tree') || lower.includes('root') || lower.includes('leaf') || lower.includes('traversal') || lower.includes('inorder') || lower.includes('preorder')) return 'trees';
+  if (lower.includes('graph') || lower.includes('bfs') || lower.includes('dfs') || lower.includes('dijkstra') || lower.includes('vertex') || lower.includes('edge') || lower.includes('shortest path')) return 'graphs';
+  if (lower.includes('complexity') || lower.includes('scale')) return 'complexity';
+  
   return 'general';
 };
 
@@ -241,7 +269,7 @@ export const AITutorService = {
     await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
 
     const category = getResponseCategory(prompt);
-    const responses = CONCEPT_EXPLANATIONS[category];
+    const responses = CONCEPT_EXPLANATIONS[category] || CONCEPT_EXPLANATIONS.general;
     return responses[Math.floor(Math.random() * responses.length)];
   },
 };
