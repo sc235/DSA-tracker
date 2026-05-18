@@ -8,7 +8,6 @@ export const ProgressService = {
 
     const accuracy = (score / total) * 100;
 
-    // Save the quiz attempt
     const { error: quizError } = await supabase
       .from('quiz_results')
       .insert({
@@ -21,16 +20,13 @@ export const ProgressService = {
 
     if (quizError) throw quizError;
 
-    // Award XP
     await this.addXP(score * 10);
 
-    // Update user mastery if score is high enough
     if (score >= 7) {
         console.log(`Mastery reached for ${topicId} (${score}/10). Unlocking next level...`);
         await ProgressService.markTopicCompleted(topicId);
     }
 
-    // Check for "Perfectionist" achievement
     if (score === 10) {
         await this.awardAchievement('perfect-quiz');
     }
@@ -40,7 +36,6 @@ export const ProgressService = {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    // Increment total_xp in profiles
     const { data: profile } = await supabase
         .from('profiles')
         .select('total_xp')
@@ -66,7 +61,7 @@ export const ProgressService = {
             achievement_id: achievementId
         });
     
-    if (error && error.code !== '23505') { // Ignore duplicate key error
+    if (error && error.code !== '23505') { 
         console.error('Error awarding achievement:', error);
     }
   },
@@ -90,10 +85,8 @@ export const ProgressService = {
     }
     console.log(`Topic ${topicId} successfully marked as completed in DB.`);
     
-    // Award Mastery XP
     await this.addXP(50);
 
-    // 🔔 Send push notifications for topic completion & unlocked topics
     await NotificationService.onTopicCompleted(topicId);
   },
 

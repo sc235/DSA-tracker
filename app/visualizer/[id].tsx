@@ -105,7 +105,6 @@ export default function VisualizerScreen() {
       setShowAI(true);
     }
 
-    // Update AI explanation when step changes
     if (steps[currentStepIndex]) {
       setAiExplanation(
         getAIExplanation(
@@ -185,7 +184,7 @@ export default function VisualizerScreen() {
       const generatedSteps = quickSortGenerator(initialData);
       setSteps(generatedSteps);
     } else if (id === "binary-search") {
-      const target = 56; // Example target
+      const target = 56; 
       const generatedSteps = binarySearchGenerator(initialData, target);
       setSteps(generatedSteps);
     } else if (id === "linked-list-search") {
@@ -219,7 +218,6 @@ export default function VisualizerScreen() {
       setSteps(generatedSteps);
     }
 
-    // Automatically start the animation for a premium experience
     const timer = setTimeout(() => {
       if (!isPracticeMode) setIsPlaying(true);
     }, 1000);

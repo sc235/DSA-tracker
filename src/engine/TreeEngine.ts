@@ -15,11 +15,8 @@ export interface TreeStep extends Omit<Step, "data"> {
   highlightedEdgeIds?: string[];
 }
 
-/**
- * Calculates tree layout coordinates dynamically
- */
+
 const calculateLayout = (values: number[]) => {
-  // Build a basic BST structure first
   interface TempNode {
     value: number;
     left: TempNode | null;

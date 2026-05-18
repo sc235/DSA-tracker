@@ -5,8 +5,8 @@ export interface Topic {
   icon: string;
   complexity: string;
   algorithms: Algorithm[];
-  prerequisites?: string[]; // Topic IDs that must be completed first
-  roadmapPosition: { x: number; y: number }; // For the visual map
+  prerequisites?: string[]; 
+  roadmapPosition: { x: number; y: number }; 
 }
 
 export interface Algorithm {

@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   trainingBadge: {
-    backgroundColor: '#FF8A3D', // VisuAlgo Orange
+    backgroundColor: '#FF8A3D', 
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 4,

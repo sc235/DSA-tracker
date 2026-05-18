@@ -23,7 +23,6 @@ import Svg, { Circle, Defs, LinearGradient, Stop, Rect, Line } from 'react-nativ
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// ── Animated Floating Orb ──────────────────────────────────────────────
 const FloatingOrb = ({ delay, x, y, size, color }: { delay: number; x: number; y: number; size: number; color: string }) => {
   const translateY = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0.4)).current;
@@ -63,7 +62,6 @@ const FloatingOrb = ({ delay, x, y, size, color }: { delay: number; x: number; y
   );
 };
 
-// ── Animated Input with Focus Glow ─────────────────────────────────────
 const AnimatedInput = ({
   icon: Icon,
   placeholder,
@@ -105,7 +103,7 @@ const AnimatedInput = ({
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }], marginBottom: 16 }}>
-      {/* Glow effect behind the input */}
+      
       <Animated.View
         style={{
           position: 'absolute',
@@ -146,7 +144,6 @@ const AnimatedInput = ({
   );
 };
 
-// ── Grid Background Pattern ────────────────────────────────────────────
 const GridBackground = () => (
   <Svg style={StyleSheet.absoluteFill} width={SCREEN_WIDTH} height={SCREEN_HEIGHT}>
     <Defs>
@@ -156,7 +153,7 @@ const GridBackground = () => (
         <Stop offset="1" stopColor={Theme.colors.background} stopOpacity="1" />
       </LinearGradient>
     </Defs>
-    {/* Vertical grid lines */}
+    
     {Array.from({ length: Math.ceil(SCREEN_WIDTH / 50) }).map((_, i) => (
       <Line
         key={`v-${i}`}
@@ -168,7 +165,7 @@ const GridBackground = () => (
         strokeWidth="1"
       />
     ))}
-    {/* Horizontal grid lines */}
+    
     {Array.from({ length: Math.ceil(SCREEN_HEIGHT / 50) }).map((_, i) => (
       <Line
         key={`h-${i}`}
@@ -180,12 +177,11 @@ const GridBackground = () => (
         strokeWidth="1"
       />
     ))}
-    {/* Fade overlay at bottom */}
+    
     <Rect x="0" y="0" width={SCREEN_WIDTH} height={SCREEN_HEIGHT} fill="url(#gridFade)" />
   </Svg>
 );
 
-// ── Feature Pill ───────────────────────────────────────────────────────
 const FeaturePill = ({ icon: Icon, label }: { icon: any; label: string }) => (
   <View style={styles.featurePill}>
     <Icon size={14} color={Theme.colors.primary} />
@@ -193,9 +189,6 @@ const FeaturePill = ({ icon: Icon, label }: { icon: any; label: string }) => (
   </View>
 );
 
-// ══════════════════════════════════════════════════════════════════════
-// ██  AUTH SCREEN  ██
-// ══════════════════════════════════════════════════════════════════════
 export default function AuthScreen() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -204,7 +197,6 @@ export default function AuthScreen() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
   const cardSlide = useRef(new Animated.Value(0)).current;
@@ -218,13 +210,11 @@ export default function AuthScreen() {
       Animated.spring(slideAnim, { toValue: 0, friction: 8, useNativeDriver: true }),
     ]).start();
 
-    // Continuous slow rotation for the logo icon
     Animated.loop(
       Animated.timing(logoRotate, { toValue: 1, duration: 8000, useNativeDriver: true })
     ).start();
   }, []);
 
-  // Animate toggle between login/signup
   const toggleMode = () => {
     Animated.sequence([
       Animated.timing(cardSlide, { toValue: -20, duration: 150, useNativeDriver: true }),
@@ -268,10 +258,10 @@ export default function AuthScreen() {
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
 
-      {/* ── Background Layers ─── */}
+      
       <GridBackground />
 
-      {/* Floating gradient orbs */}
+      
       <FloatingOrb delay={0} x={-40} y={SCREEN_HEIGHT * 0.1} size={200} color="rgba(99, 102, 241, 0.08)" />
       <FloatingOrb delay={800} x={SCREEN_WIDTH * 0.6} y={SCREEN_HEIGHT * 0.05} size={160} color="rgba(139, 92, 246, 0.06)" />
       <FloatingOrb delay={400} x={SCREEN_WIDTH * 0.3} y={SCREEN_HEIGHT * 0.7} size={220} color="rgba(16, 185, 129, 0.05)" />
@@ -286,9 +276,9 @@ export default function AuthScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {/* ── Hero Section ─── */}
+          
           <Animated.View style={[styles.heroSection, { opacity: fadeAnim }]}>
-            {/* Animated Logo */}
+            
             <Animated.View style={[styles.logoContainer, { transform: [{ scale: logoScale }] }]}>
               <View style={styles.logoOuter}>
                 <Animated.View style={[styles.logoSpinner, { transform: [{ rotate: spinInterpolation }] }]}>
@@ -302,13 +292,13 @@ export default function AuthScreen() {
               </View>
             </Animated.View>
 
-            {/* Title */}
+            
             <Text style={styles.brandName}>AlgoPlatform</Text>
             <Text style={styles.brandTagline}>
               {isLogin ? 'Welcome back, researcher.' : 'Begin your research journey.'}
             </Text>
 
-            {/* Feature pills */}
+            
             <View style={styles.featurePills}>
               <FeaturePill icon={GitBranch} label="Visual Algos" />
               <FeaturePill icon={Cpu} label="AI Tutor" />
@@ -316,7 +306,7 @@ export default function AuthScreen() {
             </View>
           </Animated.View>
 
-          {/* ── Auth Card ─── */}
+          
           <Animated.View
             style={[
               styles.card,
@@ -326,7 +316,7 @@ export default function AuthScreen() {
               },
             ]}
           >
-            {/* Toggle Tabs */}
+            
             <View style={styles.tabContainer}>
               <TouchableOpacity
                 style={[styles.tab, isLogin && styles.tabActive]}
@@ -344,7 +334,7 @@ export default function AuthScreen() {
               </TouchableOpacity>
             </View>
 
-            {/* Form Fields */}
+            
             <View style={styles.form}>
               {!isLogin && (
                 <AnimatedInput
@@ -379,7 +369,7 @@ export default function AuthScreen() {
               )}
             </View>
 
-            {/* Submit Button */}
+            
             <TouchableOpacity
               style={[styles.authButton, loading && styles.authButtonDisabled]}
               onPress={handleAuth}
@@ -401,14 +391,14 @@ export default function AuthScreen() {
               )}
             </TouchableOpacity>
 
-            {/* Divider */}
+            
             <View style={styles.dividerRow}>
               <View style={styles.dividerLine} />
               <Text style={styles.dividerText}>or continue with</Text>
               <View style={styles.dividerLine} />
             </View>
 
-            {/* Social Placeholder (for future OAuth) */}
+            
             <View style={styles.socialRow}>
               <TouchableOpacity style={styles.socialButton}>
                 <Text style={styles.socialEmoji}>G</Text>
@@ -422,7 +412,7 @@ export default function AuthScreen() {
             </View>
           </Animated.View>
 
-          {/* ── Footer ─── */}
+          
           <Animated.View style={[styles.footer, { opacity: fadeAnim }]}>
             <Text style={styles.footerText}>
               {isLogin ? "Don't have an account? " : 'Already have an account? '}
@@ -437,9 +427,6 @@ export default function AuthScreen() {
   );
 }
 
-// ══════════════════════════════════════════════════════════════════════
-// ██  STYLES  ██
-// ══════════════════════════════════════════════════════════════════════
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -455,7 +442,6 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
 
-  // ── Hero ───
   heroSection: {
     alignItems: 'center',
     marginBottom: 32,
@@ -526,14 +512,12 @@ const styles = StyleSheet.create({
     color: Theme.colors.textMuted,
   },
 
-  // ── Card ───
   card: {
     backgroundColor: 'rgba(30, 41, 59, 0.65)',
     borderRadius: 24,
     padding: 24,
     borderWidth: 1,
     borderColor: 'rgba(148, 163, 184, 0.08)',
-    // Glass effect shadow
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 12 },
     shadowOpacity: 0.3,
@@ -541,7 +525,6 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
 
-  // ── Tabs ───
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgba(15, 23, 42, 0.6)',
@@ -572,7 +555,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 
-  // ── Form ───
   form: {
     marginBottom: 8,
   },
@@ -609,7 +591,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // ── Auth Button ───
   authButton: {
     height: 56,
     borderRadius: 16,
@@ -650,7 +631,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  // ── Divider ───
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -668,7 +648,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // ── Social ───
   socialRow: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -690,7 +669,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  // ── Footer ───
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',

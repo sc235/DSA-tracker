@@ -35,7 +35,7 @@ export const ComplexityGraph: React.FC<ComplexityGraphProps> = ({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.graphWrapper}>
         <Svg width={width} height={height}>
-          {/* Grid Lines */}
+          
           <Line
             x1={padding}
             y1={height - padding}
@@ -53,7 +53,7 @@ export const ComplexityGraph: React.FC<ComplexityGraphProps> = ({
             strokeWidth="1"
           />
 
-          {/* Data Line */}
+          
           <Path
             d={pathData}
             fill="none"
@@ -62,7 +62,7 @@ export const ComplexityGraph: React.FC<ComplexityGraphProps> = ({
             strokeLinecap="round"
           />
 
-          {/* Data Points */}
+          
           {data.map((d, i) => (
             <Circle
               key={i}
@@ -73,7 +73,7 @@ export const ComplexityGraph: React.FC<ComplexityGraphProps> = ({
             />
           ))}
 
-          {/* Labels */}
+          
           <SvgText
             x={padding}
             y={height - 5}

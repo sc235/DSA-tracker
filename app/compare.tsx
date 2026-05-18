@@ -37,7 +37,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 type SortField = 'name' | 'timeWorst' | 'spaceComplexity' | 'category';
 type SortOrder = 'asc' | 'desc';
 
-// Mapping complexity strings to numerical values for sorting
 const complexityRank: Record<string, number> = {
   'O(1)': 1,
   'O(log n)': 2,
@@ -59,7 +58,6 @@ const getCategoryLabel = (category: string): string => {
   return cat?.label || category;
 };
 
-// ─── Complexity Badge ──────────────────────────────────────────────────
 const ComplexityBadge = ({
   value,
   variant = 'default',
@@ -81,7 +79,6 @@ const ComplexityBadge = ({
   );
 };
 
-// ─── Bool Badge ────────────────────────────────────────────────────────
 const BoolBadge = ({ value, label }: { value: boolean; label: string }) => (
   <View
     style={[
@@ -108,7 +105,6 @@ const BoolBadge = ({ value, label }: { value: boolean; label: string }) => (
   </View>
 );
 
-// ─── Algorithm Card (Expandable) ───────────────────────────────────────
 const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
   const [expanded, setExpanded] = useState(false);
   const catColor = getCategoryColor(algo.category);
@@ -119,10 +115,10 @@ const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
       activeOpacity={0.8}
       onPress={() => setExpanded(!expanded)}
     >
-      {/* Top Accent Line */}
+      
       <View style={[styles.cardAccent, { backgroundColor: catColor }]} />
 
-      {/* Header Row */}
+      
       <View style={styles.cardHeader}>
         <View style={styles.cardTitleRow}>
           <View style={[styles.categoryDot, { backgroundColor: catColor }]} />
@@ -140,7 +136,7 @@ const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
         </View>
       </View>
 
-      {/* Complexity Row (always visible) */}
+      
       <View style={styles.complexityRow}>
         <View style={styles.complexityItem}>
           <View style={styles.complexityLabel}>
@@ -172,20 +168,20 @@ const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
         </View>
       </View>
 
-      {/* Expanded Details */}
+      
       {expanded && (
         <View style={styles.expandedSection}>
-          {/* Description */}
+          
           <Text style={styles.descriptionText}>{algo.description}</Text>
 
-          {/* Properties */}
+          
           <View style={styles.propsRow}>
             <BoolBadge value={algo.stable} label="Stable" />
             <BoolBadge value={algo.inPlace} label="In-place" />
             <BoolBadge value={algo.adaptive} label="Adaptive" />
           </View>
 
-          {/* Method */}
+          
           <View style={styles.methodRow}>
             <Grip size={14} color={Theme.colors.textMuted} />
             <Text style={styles.methodLabel}>Method:</Text>
@@ -194,7 +190,7 @@ const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
             </View>
           </View>
 
-          {/* Use Cases */}
+          
           <View style={styles.useCasesSection}>
             <View style={styles.useCasesHeader}>
               <Layers size={14} color={catColor} />
@@ -215,7 +211,6 @@ const AlgorithmCard = ({ algo }: { algo: AlgorithmDetail }) => {
   );
 };
 
-// ─── Main Screen ───────────────────────────────────────────────────────
 export default function CompareScreen() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all');
   const [sortField, setSortField] = useState<SortField>('category');
@@ -282,7 +277,7 @@ export default function CompareScreen() {
         }}
       />
 
-      {/* ── Header Info Card ──────────────────────────────────────── */}
+      
       <View style={styles.infoCard}>
         <View style={styles.infoIconCircle}>
           <ArrowDownUp size={24} color={Theme.colors.primary} />
@@ -296,7 +291,7 @@ export default function CompareScreen() {
         </View>
       </View>
 
-      {/* ── Category Filter ───────────────────────────────────────── */}
+      
       <View style={styles.filterSection}>
         <ScrollView
           horizontal
@@ -335,7 +330,7 @@ export default function CompareScreen() {
         </ScrollView>
       </View>
 
-      {/* ── Sort Controls ─────────────────────────────────────────── */}
+      
       <View style={styles.sortBar}>
         <View style={styles.resultCount}>
           <Text style={styles.resultCountText}>
@@ -354,7 +349,7 @@ export default function CompareScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Sort Dropdown */}
+      
       {showSortMenu && (
         <View style={styles.sortDropdown}>
           {sortOptions.map((opt) => (
@@ -384,7 +379,7 @@ export default function CompareScreen() {
         </View>
       )}
 
-      {/* ── Algorithm Cards ───────────────────────────────────────── */}
+      
       <ScrollView
         style={styles.cardList}
         contentContainerStyle={styles.cardListContent}
@@ -394,7 +389,7 @@ export default function CompareScreen() {
           <AlgorithmCard key={algo.id} algo={algo} />
         ))}
 
-        {/* Legend */}
+        
         <View style={styles.legendCard}>
           <Text style={styles.legendTitle}>Legend</Text>
           <View style={styles.legendRow}>
@@ -434,14 +429,12 @@ export default function CompareScreen() {
   );
 }
 
-// ─── Styles ────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background,
   },
 
-  // Info Card
   infoCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -478,7 +471,6 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  // Filter
   filterSection: {
     marginTop: Theme.spacing.md,
   },
@@ -514,7 +506,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
 
-  // Sort
   sortBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -584,7 +575,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  // Card List
   cardList: {
     flex: 1,
   },
@@ -593,7 +583,6 @@ const styles = StyleSheet.create({
     paddingTop: Theme.spacing.sm,
   },
 
-  // Card
   card: {
     backgroundColor: Theme.colors.surface,
     borderRadius: Theme.borderRadius.xl,
@@ -644,7 +633,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  // Complexity Row
   complexityRow: {
     flexDirection: 'row',
     paddingHorizontal: 16,
@@ -681,7 +669,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.2,
   },
 
-  // Expanded Section
   expandedSection: {
     paddingHorizontal: 16,
     paddingBottom: 16,
@@ -767,7 +754,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  // Legend
   legendCard: {
     backgroundColor: Theme.colors.surface,
     borderRadius: Theme.borderRadius.xl,

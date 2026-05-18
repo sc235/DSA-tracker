@@ -6,12 +6,11 @@ interface AlgorithmState {
   steps: Step[];
   currentStepIndex: number;
   isPlaying: boolean;
-  playbackSpeed: number; // ms delay
+  playbackSpeed: number; 
   isRemoteSyncEnabled: boolean;
   isPracticeMode: boolean;
   practiceScore: number;
   
-  // Actions
   setSteps: (steps: Step[]) => void;
   nextStep: () => void;
   prevStep: () => void;
@@ -77,7 +76,7 @@ export const useAlgorithmStore = create<AlgorithmState>((set, get) => ({
   toggleRemoteSync: () => {
     const { isRemoteSyncEnabled } = get();
     if (!isRemoteSyncEnabled) {
-      socketService.connect(); // async but fire-and-forget is fine here
+      socketService.connect(); 
     } else {
       socketService.disconnect();
     }
@@ -104,7 +103,6 @@ export const useAlgorithmStore = create<AlgorithmState>((set, get) => ({
   }
 }));
 
-// Register the store's jumpToStep as the socket callback (breaks circular dependency)
 socketService.setStepUpdateCallback((index: number) => {
   useAlgorithmStore.getState().jumpToStep(index, true);
 });

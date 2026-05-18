@@ -23,11 +23,9 @@ export default function BattleVisualizerScreen() {
     Array.from({ length: dataSize }, () => Math.floor(Math.random() * 90) + 10)
   );
 
-  // States for Algo 1
   const [steps1, setSteps1] = useState<Step[]>([]);
   const [currentStep1, setCurrentStep1] = useState(0);
   
-  // States for Algo 2
   const [steps2, setSteps2] = useState<Step[]>([]);
   const [currentStep2, setCurrentStep2] = useState(0);
 
@@ -48,12 +46,10 @@ export default function BattleVisualizerScreen() {
     setSteps1(gen1([...initialData]));
     setSteps2(gen2([...initialData]));
 
-    // Automatically start the battle after a short delay for a premium feel
     const timer = setTimeout(() => {
         setIsPlaying(true);
     }, 800);
 
-    // Prepare benchmarks
     const runBenchmarks = async () => {
         const impl1 = BenchmarkingService.implementations[algo1 as string];
         const impl2 = BenchmarkingService.implementations[algo2 as string];

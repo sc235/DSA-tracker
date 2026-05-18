@@ -12,10 +12,8 @@ export default function RootLayout() {
   const router = useRouter();
   const navigationState = useRootNavigationState();
 
-  // Update online presence for duel matchmaking (only when logged in)
   usePresence();
 
-  // Request notification permissions on app start
   useEffect(() => {
     if (Platform.OS !== 'web') {
       NotificationService.requestPermissions();
@@ -23,13 +21,11 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    // Check for initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -41,14 +37,12 @@ export default function RootLayout() {
   useEffect(() => {
     if (!navigationState?.key) return;
 
-    // Use a small timeout to ensure the layout is fully mounted
     const timeout = setTimeout(() => {
       const inAuthGroup = segments[0] === 'auth';
 
       if (!user && !inAuthGroup) {
         router.replace('/auth');
       } else if (user && inAuthGroup) {
-        // Only redirect if we are not already on the home screen
         if (segments.length > 0) {
            router.replace('/');
         }

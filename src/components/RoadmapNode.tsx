@@ -39,7 +39,7 @@ export const RoadmapNode: React.FC<RoadmapNodeProps> = ({
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
         { scale: withSpring(isUnlocked ? 1 : 0.9) },
-        { rotate: '45deg' } // Diamond effect
+        { rotate: '45deg' } 
     ],
     opacity: withSpring(isUnlocked ? 1 : 0.6),
   }));

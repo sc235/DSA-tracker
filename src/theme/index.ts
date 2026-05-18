@@ -1,15 +1,15 @@
 export const Theme = {
   colors: {
-    primary: '#6366F1', // Indigo 500
-    secondary: '#8B5CF6', // Violet 500
-    background: '#0F172A', // Slate 900 (The exact dark color from the image)
-    surface: '#1E293B', // Slate 800
-    surfaceLight: '#334155', // Slate 700
-    text: '#F8FAFC', // Slate 50
-    textMuted: '#94A3B8', // Slate 400
-    success: '#10B981', // Emerald 500
-    error: '#EF4444', // Red 500
-    warning: '#F59E0B', // Amber 500
+    primary: '#6366F1', 
+    secondary: '#8B5CF6', 
+    background: '#0F172A', 
+    surface: '#1E293B', 
+    surfaceLight: '#334155', 
+    text: '#F8FAFC', 
+    textMuted: '#94A3B8', 
+    success: '#10B981', 
+    error: '#EF4444', 
+    warning: '#F59E0B', 
     border: 'rgba(148, 163, 184, 0.1)',
   },
   spacing: {

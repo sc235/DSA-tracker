@@ -1,11 +1,9 @@
 import { Step } from './types';
 
 export const binarySearchGenerator = (inputData: number[], target: number): Step[] => {
-  // Binary search requires sorted data
   const data = [...inputData].sort((a, b) => a - b);
   const steps: Step[] = [];
 
-  // Initial state
   steps.push({
     data: [...data],
     activeIndices: Array.from({ length: data.length }, (_, i) => i),
@@ -20,7 +18,6 @@ export const binarySearchGenerator = (inputData: number[], target: number): Step
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
 
-    // Comparison step
     steps.push({
       data: [...data],
       activeIndices: Array.from({ length: right - left + 1 }, (_, i) => left + i),

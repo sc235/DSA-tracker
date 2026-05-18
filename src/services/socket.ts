@@ -3,7 +3,6 @@ import { supabase } from './supabase';
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_SOCKET_URL || 'http://localhost:3000';
 
-// Callback type for step updates received from remote peers
 type StepUpdateCallback = (index: number) => void;
 
 class SocketService {
@@ -11,20 +10,13 @@ class SocketService {
   private onStepUpdate: StepUpdateCallback | null = null;
   private currentRoom: string | null = null;
 
-  /**
-   * Register a callback for remote step updates.
-   * This breaks the circular dependency by letting the store
-   * register itself after initialization instead of being imported here.
-   */
+  
   setStepUpdateCallback(callback: StepUpdateCallback) {
     this.onStepUpdate = callback;
   }
 
-  /**
-   * Connect to the WebSocket server with optional Supabase auth.
-   */
+  
   async connect() {
-    // Get current session for authenticated connection
     let token: string | undefined;
     let userId: string | undefined;
 
@@ -49,7 +41,6 @@ class SocketService {
 
     this.socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-      // Rejoin room if we were in one (reconnection scenario)
       if (this.currentRoom) {
         this.socket?.emit('join_room', this.currentRoom);
       }
@@ -90,9 +81,7 @@ class SocketService {
     });
   }
 
-  /**
-   * Join a room for scoped communication (e.g., a duel or shared visualizer session).
-   */
+  
   joinRoom(roomId: string) {
     this.currentRoom = roomId;
     if (this.socket?.connected) {
@@ -100,9 +89,7 @@ class SocketService {
     }
   }
 
-  /**
-   * Leave the current room.
-   */
+  
   leaveRoom() {
     if (this.currentRoom && this.socket?.connected) {
       this.socket.emit('leave_room', this.currentRoom);
@@ -110,9 +97,7 @@ class SocketService {
     this.currentRoom = null;
   }
 
-  /**
-   * Emit a step update, scoped to the current room if joined.
-   */
+  
   emitStep(index: number) {
     if (this.socket?.connected) {
       if (this.currentRoom) {
@@ -123,9 +108,7 @@ class SocketService {
     }
   }
 
-  /**
-   * Emit an algorithm start event to the room.
-   */
+  
   emitAlgorithmStart(algoId: string, initialData: number[]) {
     if (this.socket?.connected) {
       this.socket.emit('algorithm_start', {
@@ -136,9 +119,7 @@ class SocketService {
     }
   }
 
-  /**
-   * Disconnect and clean up.
-   */
+  
   disconnect() {
     this.leaveRoom();
     if (this.socket) {
@@ -147,9 +128,7 @@ class SocketService {
     }
   }
 
-  /**
-   * Check if currently connected.
-   */
+  
   get isConnected(): boolean {
     return this.socket?.connected ?? false;
   }

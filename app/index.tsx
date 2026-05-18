@@ -114,7 +114,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Svg style={styles.svgBackground}>
-          {/* Glowing Orbital Blobs for visual depth */}
+          
           <Circle
             cx={SCREEN_WIDTH * 0.8}
             cy="200"
@@ -134,7 +134,7 @@ export default function HomeScreen() {
             fill="rgba(245, 158, 11, 0.05)"
           />
 
-          {/* Connection Lines with Glowing Effect */}
+          
           {DSA_TOPICS.map((topic) => {
             if (!topic.prerequisites) return null;
             return topic.prerequisites.map((pId) => {
@@ -150,7 +150,7 @@ export default function HomeScreen() {
 
               return (
                 <React.Fragment key={`${pId}-${topic.id}`}>
-                  {/* Outer Glow */}
+                  
                   <Line
                     x1={startX}
                     y1={startY}
@@ -208,7 +208,7 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Floating Action Hint */}
+      
       <View style={styles.hintContainer}>
         <Text style={styles.hintText}>Tap a node to continue your journey</Text>
       </View>

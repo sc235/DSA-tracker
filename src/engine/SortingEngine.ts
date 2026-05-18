@@ -1,6 +1,5 @@
 import { Step } from './types';
 
-// BUBBLE SORT
 export const bubbleSortGenerator = (inputData: number[]): Step[] => {
   const data = [...inputData];
   const steps: Step[] = [];
@@ -57,7 +56,6 @@ export const bubbleSortGenerator = (inputData: number[]): Step[] => {
   return steps;
 };
 
-// SELECTION SORT
 export const selectionSortGenerator = (inputData: number[]): Step[] => {
   const data = [...inputData];
   const steps: Step[] = [];
@@ -118,7 +116,6 @@ export const selectionSortGenerator = (inputData: number[]): Step[] => {
   return steps;
 };
 
-// INSERTION SORT
 export const insertionSortGenerator = (inputData: number[]): Step[] => {
   const data = [...inputData];
   const steps: Step[] = [];
@@ -167,7 +164,6 @@ export const insertionSortGenerator = (inputData: number[]): Step[] => {
   return steps;
 };
 
-// MERGE SORT (Simplified for Visualization)
 export const mergeSortGenerator = (inputData: number[]): Step[] => {
   const steps: Step[] = [];
   const arr = [...inputData];
@@ -259,7 +255,6 @@ export const mergeSortGenerator = (inputData: number[]): Step[] => {
 
   return steps;
 };
-// QUICK SORT (Lomuto Partition)
 export const quickSortGenerator = (inputData: number[]): Step[] => {
   const steps: Step[] = [];
   const data = [...inputData];

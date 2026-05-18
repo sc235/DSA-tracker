@@ -15,7 +15,6 @@ export const linkedListSearchGenerator = (values: number[], target: number): Nod
 
   const steps: NodeStep[] = [];
 
-  // Initial state
   steps.push({
     nodes: [...nodes],
     highlightedNodeIds: [],
@@ -29,7 +28,6 @@ export const linkedListSearchGenerator = (values: number[], target: number): Nod
   for (let i = 0; i < nodes.length; i++) {
     const currentNode = nodes[i];
 
-    // Highlight current node
     steps.push({
       nodes: [...nodes],
       highlightedNodeIds: [currentNode.id],
@@ -54,7 +52,6 @@ export const linkedListSearchGenerator = (values: number[], target: number): Nod
     }
 
     if (currentNode.nextId) {
-      // Highlight pointer to next
       steps.push({
         nodes: [...nodes],
         highlightedNodeIds: [currentNode.id],
@@ -117,7 +114,6 @@ export const linkedListInsertGenerator = (values: number[], newValue: number, po
     return steps;
   }
 
-  // Traverse to position
   for (let i = 0; i < Math.min(position, nodes.length); i++) {
     steps.push({
       nodes: [...nodes],
@@ -139,7 +135,6 @@ export const linkedListInsertGenerator = (values: number[], newValue: number, po
     ...nodes.slice(position)
   ];
 
-  // Update prev pointer
   const finalNodes = updatedNodes.map(n => 
     n.id === prevNode.id ? { ...n, nextId: newNodeId } : n
   );

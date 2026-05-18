@@ -15,7 +15,6 @@ export interface AlgorithmDetail {
 }
 
 export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
-  // ── Sorting ───────────────────────────────────────────────────
   {
     id: 'bubble-sort',
     name: 'Bubble Sort',
@@ -107,7 +106,6 @@ export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
     description: 'Builds a max-heap and repeatedly extracts the maximum element.',
   },
 
-  // ── Searching ─────────────────────────────────────────────────
   {
     id: 'linear-search',
     name: 'Linear Search',
@@ -139,7 +137,6 @@ export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
     description: 'Repeatedly divides the search space in half to find the target.',
   },
 
-  // ── Trees ─────────────────────────────────────────────────────
   {
     id: 'bst-search',
     name: 'BST Search',
@@ -186,7 +183,6 @@ export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
     description: 'Visits all nodes in a tree using In-order, Pre-order, or Post-order.',
   },
 
-  // ── Graphs ────────────────────────────────────────────────────
   {
     id: 'bfs',
     name: 'Breadth-First Search',
@@ -218,7 +214,6 @@ export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
     description: 'Explores as far as possible along a branch before backtracking.',
   },
 
-  // ── Hashing ───────────────────────────────────────────────────
   {
     id: 'hash-insert',
     name: 'Hash Table Insert',
@@ -250,7 +245,6 @@ export const ALGORITHM_DETAILS: AlgorithmDetail[] = [
     description: 'Retrieves a value by computing the hash of its key.',
   },
 
-  // ── Linear Structures ────────────────────────────────────────
   {
     id: 'stack-ops',
     name: 'Stack Push/Pop',

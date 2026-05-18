@@ -3,7 +3,6 @@ import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 import { DSA_TOPICS } from '../constants/Topics';
 
-// ── Configure notification behavior (show even when app is foreground) ──
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -14,13 +13,9 @@ Notifications.setNotificationHandler({
   }),
 });
 
-// ── Notification Service ────────────────────────────────────────────────
 export const NotificationService = {
 
-  /**
-   * Request permission for local notifications.
-   * Call this once during app startup.
-   */
+  
   async requestPermissions(): Promise<boolean> {
     if (Platform.OS === 'web') return false;
 
@@ -38,7 +33,6 @@ export const NotificationService = {
         return false;
       }
 
-      // Android-specific: create a notification channel
       if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync('topic-complete', {
           name: 'Topic Completion',
@@ -64,9 +58,7 @@ export const NotificationService = {
     }
   },
 
-  /**
-   * Send a "Topic Completed" notification immediately.
-   */
+  
   async notifyTopicCompleted(topicId: string): Promise<void> {
     const topic = DSA_TOPICS.find(t => t.id === topicId);
     if (!topic) return;
@@ -80,19 +72,15 @@ export const NotificationService = {
           sound: 'default',
           ...(Platform.OS === 'android' && { channelId: 'topic-complete' }),
         },
-        trigger: null, // Send immediately
+        trigger: null, 
       });
     } catch (error) {
       console.error('Error sending topic completion notification:', error);
     }
   },
 
-  /**
-   * Send a "Topic Unlocked" notification after a short delay.
-   * Shows which new topics are now available.
-   */
+  
   async notifyTopicUnlocked(completedTopicId: string): Promise<void> {
-    // Find all topics that have the completed topic as a prerequisite
     const newlyUnlocked = DSA_TOPICS.filter(t =>
       t.prerequisites?.includes(completedTopicId)
     );
@@ -105,7 +93,6 @@ export const NotificationService = {
       : `${topicNames.length} new topics unlocked: ${topicNames.join(', ')}. Tap to explore!`;
 
     try {
-      // Small delay so it arrives after the completion notification
       await Notifications.scheduleNotificationAsync({
         content: {
           title: '🔓 New Topic Unlocked!',
@@ -124,10 +111,7 @@ export const NotificationService = {
     }
   },
 
-  /**
-   * Combined handler: call after marking a topic as completed.
-   * Sends both the "completed" and "unlocked" notifications.
-   */
+  
   async onTopicCompleted(topicId: string): Promise<void> {
     await this.notifyTopicCompleted(topicId);
     await this.notifyTopicUnlocked(topicId);

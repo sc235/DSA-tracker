@@ -1,6 +1,6 @@
 export interface BenchmarkResult {
     size: number;
-    time: number; // in milliseconds or microseconds
+    time: number; 
 }
 
 export interface ComplexityData {
@@ -32,7 +32,6 @@ export class BenchmarkingService {
         return results;
     }
 
-    // Pure implementations for benchmarking (no steps/visuals)
     static implementations: Record<string, (data: number[]) => void> = {
         'bubble-sort': (arr) => {
             for (let i = 0; i < arr.length; i++) {

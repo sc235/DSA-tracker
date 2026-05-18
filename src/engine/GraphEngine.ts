@@ -78,7 +78,6 @@ export const bfsGenerator = (startNode: string): Step[] => {
         visited.add(neighbor);
         queue.push(neighbor);
         
-        // Find the edge to highlight
         const edge = demoGraphEdges.find(e => 
           (e.from === current && e.to === neighbor) || 
           (e.from === neighbor && e.to === current)

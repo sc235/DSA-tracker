@@ -14,7 +14,7 @@ export function usePresence() {
     };
 
     updatePresence();
-    const interval = setInterval(updatePresence, 30000); // Every 30 seconds
+    const interval = setInterval(updatePresence, 30000); 
 
     return () => clearInterval(interval);
   }, []);

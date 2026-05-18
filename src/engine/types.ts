@@ -1,6 +1,6 @@
 export interface Step {
   data?: number[];
-  nodes?: any[]; // For Linked Lists
+  nodes?: any[]; 
   treeNodes?: { id: string; value: number; leftId: string | null; rightId: string | null; x: number; y: number }[];
   graphNodes?: { id: string; value: string; x: number; y: number }[];
   graphEdges?: { from: string; to: string }[];

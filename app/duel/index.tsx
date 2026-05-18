@@ -31,7 +31,7 @@ export default function DuelLobbyScreen() {
 
   useEffect(() => {
     fetchUsers();
-    const interval = setInterval(fetchUsers, 10000); // Refresh every 10s
+    const interval = setInterval(fetchUsers, 10000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -42,7 +42,6 @@ export default function DuelLobbyScreen() {
     let channel: any = null;
 
     const startSubscription = async () => {
-        // Force cleanup of any existing channel with this name
         await supabase.removeChannel(supabase.channel(channelName));
 
         channel = supabase
@@ -82,7 +81,7 @@ export default function DuelLobbyScreen() {
       .from('profiles')
       .select('*')
       .neq('id', user?.id)
-      .gt('last_seen', new Date(Date.now() - 5 * 60000).toISOString()) // Active in last 5 min
+      .gt('last_seen', new Date(Date.now() - 5 * 60000).toISOString()) 
       .order('total_xp', { ascending: false });
     
     setOnlineUsers(data || []);
@@ -165,7 +164,6 @@ export default function DuelLobbyScreen() {
         false
       );
 
-      // Simulate matchmaking
       const timer = setTimeout(() => {
           setSearchStatus('Match Found!');
           setTimeout(() => {
@@ -287,7 +285,7 @@ export default function DuelLobbyScreen() {
               <View style={styles.pulseDot} />
             </View>
 
-            {/* Email Challenge Input */}
+            
             <View style={styles.emailInviteArea}>
                 <TextInput
                     style={styles.emailInput}
@@ -373,7 +371,6 @@ export default function DuelLobbyScreen() {
   );
 }
 
-// Reuse styles from existing screens or create new ones
 const styles = StyleSheet.create({
   container: {
     flex: 1,

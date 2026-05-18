@@ -1,19 +1,15 @@
 const http = require('http');
 const { Server } = require('socket.io');
 
-// ══════════════════════════════════════════════════════════════════════
-// ██  DSA PLATFORM — REAL-TIME SERVER  ██
-// ══════════════════════════════════════════════════════════════════════
 
 const PORT = process.env.PORT || 3000;
 
-// ── Rate Limiting ──────────────────────────────────────────────────────
 const RATE_LIMIT = {
-  windowMs: 1000,     // 1 second window
-  maxEvents: 30,      // Max events per window per user
+  windowMs: 1000,     
+  maxEvents: 30,      
 };
 
-const rateLimitMap = new Map(); // socketId -> { count, resetTime }
+const rateLimitMap = new Map(); 
 
 function isRateLimited(socketId) {
   const now = Date.now();
@@ -32,7 +28,6 @@ function isRateLimited(socketId) {
   return false;
 }
 
-// ── Input Validation ───────────────────────────────────────────────────
 function isValidStepIndex(index) {
   return typeof index === 'number' && Number.isFinite(index) && index >= 0 && index < 10000;
 }
@@ -53,8 +48,7 @@ function isValidAlgoStart(data) {
   );
 }
 
-// ── Room Tracking ──────────────────────────────────────────────────────
-const rooms = new Map(); // roomId -> { users: Set<socketId>, createdAt, algorithmId }
+const rooms = new Map(); 
 
 function getRoomStats() {
   const stats = {};
@@ -64,7 +58,6 @@ function getRoomStats() {
   return stats;
 }
 
-// ── HTTP Health Check ──────────────────────────────────────────────────
 const server = http.createServer((req, res) => {
   if (req.url === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -81,33 +74,25 @@ const server = http.createServer((req, res) => {
   }
 });
 
-// ── Socket.IO Server ───────────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
-  // Connection limits
-  maxHttpBufferSize: 1e6,      // 1MB max message size
-  pingTimeout: 20000,          // 20s before considering disconnected
-  pingInterval: 10000,         // Ping every 10s
-  connectTimeout: 10000,       // 10s to complete handshake
+  maxHttpBufferSize: 1e6,      
+  pingTimeout: 20000,          
+  pingInterval: 10000,         
+  connectTimeout: 10000,       
 });
 
-// ── Auth Middleware ─────────────────────────────────────────────────────
 io.use((socket, next) => {
-  // Extract token from handshake (optional — allows unauthenticated for dev)
   const token = socket.handshake.auth?.token;
   const userId = socket.handshake.auth?.userId;
 
   if (token) {
-    // In production, verify the Supabase JWT here:
-    // const { data, error } = await supabase.auth.getUser(token);
-    // if (error) return next(new Error('Authentication failed'));
     socket.data.userId = userId || 'authenticated-user';
     socket.data.authenticated = true;
   } else {
-    // Allow connection without auth for dev/demo mode
     socket.data.userId = `anon-${socket.id.slice(0, 8)}`;
     socket.data.authenticated = false;
   }
@@ -115,19 +100,16 @@ io.use((socket, next) => {
   next();
 });
 
-// ── Connection Handler ─────────────────────────────────────────────────
 io.on('connection', (socket) => {
   const userId = socket.data.userId;
   console.log(`[CONNECT] ${userId} (${socket.id}) — auth: ${socket.data.authenticated}`);
 
-  // ── Join Room ──
   socket.on('join_room', (roomId) => {
     if (!isValidRoomId(roomId)) {
       socket.emit('error', { message: 'Invalid room ID' });
       return;
     }
 
-    // Leave any previous rooms (except the socket's own room)
     for (const r of socket.rooms) {
       if (r !== socket.id) {
         socket.leave(r);
@@ -139,7 +121,6 @@ io.on('connection', (socket) => {
       }
     }
 
-    // Join the new room
     socket.join(roomId);
     if (!rooms.has(roomId)) {
       rooms.set(roomId, { users: new Set(), createdAt: Date.now(), algorithmId: null });
@@ -149,12 +130,10 @@ io.on('connection', (socket) => {
     const roomSize = rooms.get(roomId).users.size;
     console.log(`[ROOM] ${userId} joined '${roomId}' (${roomSize} users)`);
 
-    // Notify room members
     socket.to(roomId).emit('user_joined', { userId, roomSize });
     socket.emit('room_joined', { roomId, roomSize });
   });
 
-  // ── Leave Room ──
   socket.on('leave_room', (roomId) => {
     if (!isValidRoomId(roomId)) return;
     socket.leave(roomId);
@@ -171,14 +150,12 @@ io.on('connection', (socket) => {
     console.log(`[ROOM] ${userId} left '${roomId}'`);
   });
 
-  // ── Step Update (scoped to room) ──
   socket.on('step_update', (data) => {
     if (isRateLimited(socket.id)) {
       socket.emit('error', { message: 'Rate limited. Slow down.' });
       return;
     }
 
-    // Support both formats: just an index, or { roomId, index }
     let index, roomId;
     if (typeof data === 'number') {
       index = data;
@@ -196,15 +173,12 @@ io.on('connection', (socket) => {
     }
 
     if (roomId && isValidRoomId(roomId)) {
-      // Room-scoped broadcast
       socket.to(roomId).emit('step_update', index);
     } else {
-      // Fallback: broadcast to all (backward compatible)
       socket.broadcast.emit('step_update', index);
     }
   });
 
-  // ── Algorithm Start (scoped to room) ──
   socket.on('algorithm_start', (data) => {
     if (isRateLimited(socket.id)) return;
     if (!isValidAlgoStart(data)) {
@@ -232,9 +206,7 @@ io.on('connection', (socket) => {
     console.log(`[ALGO] ${userId} started ${data.algoId} in room '${roomId || 'global'}'`);
   });
 
-  // ── Disconnect ──
   socket.on('disconnect', (reason) => {
-    // Clean up from all rooms
     for (const [roomId, room] of rooms.entries()) {
       if (room.users.has(socket.id)) {
         room.users.delete(socket.id);
@@ -246,19 +218,16 @@ io.on('connection', (socket) => {
       }
     }
 
-    // Clean up rate limit entry
     rateLimitMap.delete(socket.id);
 
     console.log(`[DISCONNECT] ${userId} (${reason})`);
   });
 
-  // ── Error Handler ──
   socket.on('error', (err) => {
     console.error(`[ERROR] ${userId}:`, err.message);
   });
 });
 
-// ── Clean up stale rate limit entries every 60s ────────────────────────
 setInterval(() => {
   const now = Date.now();
   for (const [id, entry] of rateLimitMap.entries()) {
@@ -268,7 +237,6 @@ setInterval(() => {
   }
 }, 60000);
 
-// ── Graceful Shutdown ──────────────────────────────────────────────────
 process.on('SIGTERM', () => {
   console.log('[SERVER] SIGTERM received. Shutting down gracefully...');
   io.close(() => {
@@ -281,14 +249,12 @@ process.on('SIGTERM', () => {
 
 process.on('uncaughtException', (err) => {
   console.error('[FATAL] Uncaught exception:', err);
-  // Keep running — don't crash on unexpected errors
 });
 
 process.on('unhandledRejection', (reason) => {
   console.error('[FATAL] Unhandled rejection:', reason);
 });
 
-// ── Start ──────────────────────────────────────────────────────────────
 server.listen(PORT, () => {
   console.log(`\n🚀 DSA Platform Server running on http://localhost:${PORT}`);
   console.log(`   Health check: http://localhost:${PORT}/health`);

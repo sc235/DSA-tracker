@@ -140,7 +140,6 @@ export const getAIExplanation = (
     };
   }
 
-  // Context-Aware Dynamic Explanation Engine
   if (algorithmId === 'bubble-sort' && payload) {
     const { indices, values, swapped } = payload;
     const [i, j] = indices || [0, 0];
@@ -168,7 +167,6 @@ export const getAIExplanation = (
     dynamicExplanation = `Partitioning around pivot ${pivot}. Values smaller than ${pivot} are being moved to the left side.`;
     proTip = "Quick Sort is often the fastest sorting algorithm in practice because of its cache-friendliness.";
   } else {
-    // Fallback to static explanations
     const explanations: Record<string, string[]> = {
         "bubble-sort": ["Analyzing pairs...", "Sorting in progress...", "Completing pass..."],
         "merge-sort": ["Dividing array...", "Merging sorted halves...", "Building final array..."],
@@ -196,8 +194,6 @@ export const getAIExplanation = (
   };
 };
 
-// ── AI Study Companion & Concept Tutor ──────────────────────────────────
-// Used by the Tutor screen to explain difficult DSA concepts with simple analogies.
 
 const CONCEPT_EXPLANATIONS: Record<string, string[]> = {
   arrays: [
@@ -241,7 +237,6 @@ const CONCEPT_EXPLANATIONS: Record<string, string[]> = {
 const getResponseCategory = (prompt: string): string => {
   const lower = prompt.toLowerCase();
   
-  // 1. Two-word or very specific keywords first
   if (lower.includes('binary search tree') || lower.includes('bst') || lower.includes('avl')) return 'trees';
   if (lower.includes('binary search') || lower.includes('linear search') || lower.includes('jump search')) return 'searching';
   if (lower.includes('dynamic programming') || lower.includes('dp') || lower.includes('memoiz') || lower.includes('tabulat') || lower.includes('subproblem') || lower.includes('fibonacci')) return 'dynamicProgramming';
@@ -250,7 +245,6 @@ const getResponseCategory = (prompt: string): string => {
   if (lower.includes('two pointer') || lower.includes('two-pointer') || lower.includes('pointers')) return 'arrays';
   if (lower.includes('hash') || lower.includes('map') || lower.includes('dict') || lower.includes('collision') || lower.includes('chaining') || lower.includes('bucket')) return 'hashTables';
   
-  // 2. Single-word broad topics
   if (lower.includes('array') || lower.includes('vector') || lower.includes('slice') || lower.includes('index')) return 'arrays';
   if (lower.includes('stack') || lower.includes('queue') || lower.includes('lifo') || lower.includes('fifo') || lower.includes('push') || lower.includes('pop') || lower.includes('enqueue') || lower.includes('dequeue')) return 'stacksQueues';
   if (lower.includes('recur') || lower.includes('factorial') || lower.includes('base case') || lower.includes('call stack')) return 'recursion';
@@ -265,7 +259,6 @@ const getResponseCategory = (prompt: string): string => {
 
 export const AITutorService = {
   getExplanation: async (prompt: string): Promise<string> => {
-    // Simulate network delay for realistic AI feel
     await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
 
     const category = getResponseCategory(prompt);

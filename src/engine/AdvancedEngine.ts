@@ -32,7 +32,6 @@ export const hashInsertGenerator = (keys: number[]): HashStep[] => {
             hashValue: hash
         });
 
-        // Simplified collision handling for visualization
         if (buckets[hash] !== null) {
             steps.push({
                 buckets: [...buckets],
@@ -128,7 +127,6 @@ export const heapGenerator = (values: number[], type: 'max' | 'min'): HeapStep[]
         }
     };
 
-    // Bottom-Up Heap Construction
     const n = current.length;
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
         siftDown(current, i, n - 1);
@@ -140,7 +138,6 @@ export const heapGenerator = (values: number[], type: 'max' | 'min'): HeapStep[]
         highlightedNodeIds: current.map((val, i) => `h${i}_v${val}`)
     });
 
-    // Simulate 1 priority extraction
     if (current.length > 1) {
         const extracted = current[0];
         const lastLeaf = current[current.length - 1];
